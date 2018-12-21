@@ -1,11 +1,27 @@
 <?php 
 /*
- Plugin Name: A RingCentral
- Plugin URI: https://ringcentral.com/
- Description: RingCentral Plugin
- Author: Peter MacIntyre / Mike Stowe
- Version: 0.0.1
- Author URI: https://paladin-bs.com
+ Plugin Name: RCCP Free
+ Plugin URI:  https://ringcentral.com/
+ Description: RingCentral Communications Plugin - FREE
+ Author:      Peter MacIntyre
+ Version:     0.7.1
+ Author URI:  https://paladin-bs.com/peter-macintyre/
+ Details URI: https://paladin-bs.com
+ License:     GPL2
+ License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+RCCP Free is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+any later version.
+ 
+RCCP Free is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+ 
+See License URI for full details.
+
 */
 error_reporting(E_ALL & ~E_NOTICE);
 ini_set('display_errors', 0);
@@ -31,25 +47,25 @@ add_action('admin_menu', 'ringcentral_menu');
 /* ========================================= */
 function ringcentral_menu(){
     add_menu_page(
-        'RingCentral Plugin Management Page',       // Page & tab title
-        'RingCentral',                              // Menu title
+        'RCCP Free: RingCentral Configurations',    // Page & tab title
+        'RCCP Free',                                // Menu title
         'manage_options',                           // Capability option
         'ringcentral_Admin',                        // Menu slug
         'ringcentral_config_page',                  // menu destination function call
         plugin_dir_url(__FILE__) . 'images/ringcentral-icon.jpg', // menu icon path
 //         'dashicons-phone', // menu icon path from dashicons library
-        40 );                                       // menu position level         
+        25 );                                       // menu position level         
      
     add_submenu_page(
-        'ringcentral_Admin',              // parent slug
-        'RingCentral Configuration Page', // page title
-        'Settings',                       // menu title - can be different than parent
-        'manage_options',                 // options
-        'ringcentral_Admin' );            // menu slug to match top level (go to the same link)
+        'ringcentral_Admin',                   // parent slug
+        'RCCP Free: RingCentral Configurations', // page title
+        'Settings',                            // menu title - can be different than parent
+        'manage_options',                      // options
+        'ringcentral_Admin' );                 // menu slug to match top level (go to the same link)
     
     add_submenu_page(
         'ringcentral_Admin',                // parent menu slug
-        'RingCentral Add Subscribers Page', // page title
+        'RCCP Free: RingCentral Add a New Subscriber', // page title
         'Add Subscribers',                  // menu title
         'manage_options',                   // capability
         'ringcentral_add_subs',             // menu slug
@@ -57,7 +73,7 @@ function ringcentral_menu(){
         );    
     add_submenu_page(
         'ringcentral_Admin',                   // parent menu slug
-        'RingCentral Manage Subscribers Page', // page title
+        'RCCP Free: RingCentral Manage Subscribers', // page title
         'List Subscribers',                    // menu title
         'manage_options',                      // capability
         'ringcentral_list_subs',               // menu slug
@@ -65,7 +81,7 @@ function ringcentral_menu(){
         );    
     add_submenu_page(
         'ringcentral_Admin',                // parent menu slug
-        'RingCentral CallMe Requests Page', // page title
+        'RCCP Free: RingCentral CallMe Requests', // page title
         'Call Me Requests',                 // menu title
         'manage_options',                   // capability
         'ringcentral_list_callme',          // menu slug
@@ -103,7 +119,7 @@ function ringcentral_add_subscribers() {
     ?>
     <div class="wrap">
         <img id='page_title_img' title="RingCentral Plugin" src="<?= $logo_path ;?>">
-        <h1 id='page_title'>RingCentral Add Subscribers</h1>
+        <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
         
        <?php require_once("includes/ringcentral-add-subscribers.inc"); ?>
        
@@ -120,7 +136,7 @@ function ringCentral_list_subscribers() {
         
     <div class="wrap">
         <img id='page_title_img' title="RingCentral Plugin" src="<?= $logo_path ;?>">
-        <h1 id='page_title'>RingCentral Manage Subscribers</h1>
+        <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
         
        <?php require_once("includes/ringcentral-list-subscribers.inc"); ?>
        
@@ -136,7 +152,7 @@ function ringCentral_list_callme_requests() {
         
     <div class="wrap">
         <img id='page_title_img' title="RingCentral Plugin" src="<?= $logo_path ;?>">
-        <h1 id='page_title'>RingCentral Call Me Requests</h1>
+        <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
         
        <?php require_once("includes/ringcentral-list-callme.inc"); ?>
        
