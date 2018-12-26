@@ -157,9 +157,10 @@ function ringcentral_validate_sdk($rc_handshake) {
     // attempt to Login via API
     try {
         $sdk->platform()->login($rc_handshake['user_name'], $rc_handshake['extension'], $rc_handshake['password']);
-        return true ;
+        $result = true ;
     } catch (\RingCentral\SDK\Http\ApiException $e) {
-        return false ;
+        $result = false ;
     }
+    return $result ;
 }
 ?>
