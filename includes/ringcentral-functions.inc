@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Copyright (C) 2018 RingCentral Inc.
  *
@@ -55,6 +55,7 @@ function send_welcome_email($email, $token, $full_name) {
 /* send out welcome SMS function */
 /* ============================= */
 function send_welcome_mobile($to, $token, $full_name) {
+    
     $confirm_url = plugins_url('/', __FILE__) . "ringcentral-confirm-optin.php?contact_id=" . $token;
     $confirm_url .= "&method=2" ;
     $message = "Hi $full_name: Thanks for joining our newsletter sign up process. [If this was not you please ignore this message]\n\n";
@@ -66,6 +67,7 @@ function send_welcome_mobile($to, $token, $full_name) {
     
     $sdk = ringcentral_sdk() ;
     try {
+        // echo "in try...";
         $apiResponse = $sdk->platform()->post('/account/~/extension/~/sms',
             array('from' => array('phoneNumber' => $from),
                 'to'   => array( array('phoneNumber' => $to) ),
@@ -82,9 +84,9 @@ function send_welcome_mobile($to, $token, $full_name) {
         
         // Another way to get message, but keep in mind, that there could be no response if request has failed completely
         // print '  Message: ' . $e->apiResponse->response()->error() . PHP_EOL;
-        // $message = '  Message: ' . $e->apiResponse->response()->error() . PHP_EOL;
+        $message = '  Message: ' . $e->apiResponse->response()->error() . PHP_EOL;
         // craft a friendly message here.
-        $return_message = "There was an error adding you to our SMS list, please contact us or try again later";
+        $return_message = "There was an error adding you to our SMS list, Please try again later <br/>" . $message;
     }
 } // end send_welcome_mobile function
 
@@ -108,7 +110,7 @@ function ringcentral_get_from() {
     $result_rc = $wpdb->get_row( $wpdb->prepare("SELECT `ringcentral_user_name`
             FROM `ringcentral_control` WHERE `ringcentral_control_id` = %d", 1 )
         );
-    return $result_rc->ringcentral_user_name ;    
+    return $result_rc->ringcentral_user_name ;
 }
 /* ========================= */
 /* call ringout api function */
@@ -139,6 +141,25 @@ function ringcentral_ringout($to) {
         // $message = '  Message: ' . $e->apiResponse->response()->error() . PHP_EOL;
         // craft a friendly message here.
         // $return_message = "There was an error adding you to our SMS list, please contact us or try again later";
+    }
+}
+
+/* ============================================================ */
+/* Validate RingCental SDK connection with provided credentials */
+/* ============================================================ */
+function ringcentral_validate_sdk($rc_handshake) {
+    // Include Libraries
+    require('vendor/autoload.php');
+    
+    // Setup Client
+    $sdk = new RingCentral\SDK\SDK($rc_handshake['client_id'], $rc_handshake['client_secret'], RingCentral\SDK\SDK::SERVER_SANDBOX);
+    
+    // attempt to Login via API
+    try {
+        $sdk->platform()->login($rc_handshake['user_name'], $rc_handshake['extension'], $rc_handshake['password']);
+        return true ;
+    } catch (\RingCentral\SDK\Http\ApiException $e) {
+        return false ;
     }
 }
 ?>

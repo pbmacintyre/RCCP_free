@@ -10,7 +10,7 @@ ini_set('display_errors', 0);
 /* ========= */
 /* show_form */
 /* ========= */
-Function show_form($message, $label = "", $color = "green") {	
+Function show_form($message, $label = "", $color = "#008EC2") {	
 	global $print_again, $wpdb;    ?>		
 	<form action="" method="post" >
 	<table class="TableOverride" >
@@ -229,32 +229,48 @@ Function check_form() {
 	
 	global $print_again, $wpdb;
 	
+	$label = "" ;
+	$error = "" ;
+	
+	$rc_handshake = array(
+	    "client_id"        => $_POST['client_id'],
+	    "client_secret"    => $_POST['client_secret'],
+	    "user_name"        => $_POST['ringcentral_user_name'] ,
+	    "extension"        => $_POST['ringcentral_extension'] ,
+	    "password"         => $_POST['ringcentral_password'] 	    
+	);
+	
 	/* data integrity checks */	
-	if ($_POST['client_id'] == "") {
+	if (ringcentral_validate_sdk($rc_handshake) == false) {
+	    $print_again = true;
+	    $label = "";
+	    $error = "There was an error validating your Ring Central account credentials, please verify and try again";
+	}
+	if ($rc_handshake["client_id"] == "") {
 	    $print_again = true;
 	    $label = "client_id";
 	    $error = "<b>Client ID cannot be blank.</b>";
 	}	
-	if ($_POST['client_secret'] == "") {
+	if ($rc_handshake["client_secret"] == "") {
 	    $print_again = true;
 	    $label = "client_secret";
 	    $error = "<b>Client Secret Key cannot be blank.</b>";
 	}
-	if ($_POST['ringcentral_user_name'] == "") {
+	if ($rc_handshake["user_name"] == "") {
 	    $print_again = true;
 	    $label = "ringcentral_user_name";
 	    $error = "<b>RingCentral User Name cannot be blank.</b>";
 	}
-	if ($_POST['ringcentral_extension'] == "") {
+	if ($rc_handshake["extension"] == "") {
 	    $print_again = true;
 	    $label = "ringcentral_extension";
 	    $error = "<b>RingCentral extension cannot be blank.</b>";
 	}
-	if ($_POST['ringcentral_password'] == "") {
+	if ($rc_handshake["password"] == "") {
 	    $print_again = true;
 	    $label = "ringcentral_password";
 	    $error = "<b>RingCentral password cannot be blank.</b>";
-	}
+	}	
 	/*
 	if ($_POST['oauth_client'] == "") {
 	    $print_again = true;
@@ -271,7 +287,8 @@ Function check_form() {
 	// end data integrity checking
 	
 	if ($print_again == true) {
-		show_form($error, $label, 'red');
+		$color = "red" ;
+	    show_form($error, $label, $color);
 	} else {	    
 	    /* convert and / or sanitize any needed form POST values */
 	    if ($_POST['embedded_phone'] == "on") { 
@@ -289,28 +306,22 @@ Function check_form() {
             $mobile_updates = 1;
         } else {
             $mobile_updates = 0;
-        }
+        }        
         
-        $client_id             = $_POST['client_id'] ;
-        $client_secret         = $_POST['client_secret'] ;
-        $ringcentral_user_name = $_POST['ringcentral_user_name'] ;
-        $ringcentral_extension = $_POST['ringcentral_extension'] ;
-        $ringcentral_password  = $_POST['ringcentral_password'] ;
         $token_prefix          = $_POST['token_prefix'] ;
         
 //         $oauth_client = $_POST['oauth_client'] ;
 //         $oauth_secret = $_POST['oauth_secret'] ;
-	    
+
         $wpdb->query( $wpdb->prepare("UPDATE `ringcentral_control` SET
             `embedded_phone` = %d, `email_updates` = %d, `mobile_updates` = %d, `client_id` = %s, `client_secret` = %s,
             `ringcentral_user_name` = %s, `ringcentral_extension` = %d, `ringcentral_password` = %s, `token_prefix` = %s
-            WHERE `ringcentral_control_id` = %d",
-            $embedded_phone, $email_updates, $mobile_updates, $client_id, $client_secret, $ringcentral_user_name,
-            $ringcentral_extension, $ringcentral_password, $token_prefix, 1)
+            WHERE `ringcentral_control_id` = %d", $embedded_phone, $email_updates, $mobile_updates, $rc_handshake['client_id'], $rc_handshake['client_secret'], 
+            $rc_handshake['user_name'], $rc_handshake['extension'], $rc_handshake['password'], $token_prefix, 1)
         );   
-
-	    $color = "red";
-	    show_form("Configuration Changes have been saved",'',$color) ;	       
+	    $color = "#53DF00";
+	    $message = "Configuration Changes have been saved";	   
+	    show_form($message, $label, $color) ;
 	}
 }
 

@@ -8,11 +8,11 @@ class ringcentral_contacts_widget extends WP_Widget {
     function ringcentral_contacts_widget() {
         $widget_ops = array(
           'classname' => 'ring_central_contacts_widget_class',
-          'description' => 'When signing up for a newsletter also offer contacts text for new post notifications.'
+          'description' => 'When signing up for new Post Notifications also offer SMS messages.'
         );
         $this->WP_Widget(
             'ring_central_contacts_widget',
-            'A RingCentral Contacts Widget',
+            'RCCP-Free Contacts Widget',
             $widget_ops );
     }
     
