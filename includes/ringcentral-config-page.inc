@@ -5,7 +5,7 @@
  */
 
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 
 /* ========= */
 /* show_form */
@@ -152,8 +152,11 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 	</tr>	
 	<tr class="TableOverride">
 		<td class="left_col">
-			<p style='display: inline; <?php if ($label == "ringcentral_user_name") echo "color:red"; ?>' >Username (control phone #):</p>
-			<p style='color: red; display: inline'>*</p>
+		<p style='display: inline; <?php if ($label == "ringcentral_user_name") echo "color:red"; ?>' >Username:</p>
+		<p style='color: red; display: inline'>*</p>
+        
+        <?php echo build_help("username") ; ?>
+              
 		</td>
 		<td class="right_col"><input type="text" name="ringcentral_user_name" value="<?php 
 		  if ($print_again) {
@@ -198,7 +201,10 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 	<tr class="TableOverride">
 		<td class="left_col">
 			<p style='display: inline; <?php if ($label == "token_prefix") echo "color:red"; ?>' >Token Prefix:</p>
-			<!--  <p style='color: red; display: inline'>*</p>   -->
+            <!--  <p style='color: red; display: inline'>*</p>   -->
+             
+            <?php echo build_help("token_prefix") ; ?>
+                         
 		</td>
 		<td class="right_col"><input type="text" name="token_prefix" style="width: 25%;" value="<?php 
 		  if ($print_again) {

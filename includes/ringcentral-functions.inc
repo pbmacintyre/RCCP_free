@@ -163,4 +163,17 @@ function ringcentral_validate_sdk($rc_handshake) {
     }
     return $result ;
 }
+
+/* ============================== */
+/* Build help icon and title text */
+/* ============================== */
+function build_help($field) {
+    global $wpdb;
+    $image_source = plugin_dir_url(__FILE__) . '../images/question_mark.png' ;
+    $result_rc_help = $wpdb->get_row( $wpdb->prepare("SELECT ringcentral_help_help AS help_text
+            FROM `ringcentral_help` WHERE `ringcentral_help_field` = %s", $field) );
+
+    $out_string = "<img src='$image_source' title='$result_rc_help->help_text' />" ;
+    return $out_string ;
+}
 ?>

@@ -70,6 +70,31 @@ $ringcentral_sql = "CREATE TABLE `ringcentral_call_requests` (
   PRIMARY KEY (`ringcentral_call_requests_id`)
 ) ";
 dbDelta($ringcentral_sql);
+/* ==============================*/
+/* Create ringcentral_help table */
+/* ==============================*/
+$ringcentral_sql = "CREATE TABLE `ringcentral_help` ( 
+`ringcentral_help_id` INT NOT NULL AUTO_INCREMENT , 
+`ringcentral_help_field` VARCHAR(75) NULL , 
+`ringcentral_help_help` TEXT NULL , 
+PRIMARY KEY (`ringcentral_help_id`))";
+dbDelta($ringcentral_sql);
+/* ====================================== */
+/* seed table with control row and basic  */
+/* data if there is no existing row       */
+/* ====================================== */
+$row_exists = $wpdb->get_var($wpdb->prepare("SELECT `ringcentral_help_id` FROM `ringcentral_help`
+        WHERE `ringcentral_help_id` = %d", 1) );
+if (!$row_exists) {
+    $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_help`
+      (`ringcentral_help_id`, `ringcentral_help_field`, `ringcentral_help_help`)
+      VALUES (%d, %s, %s)",
+        1, "username", "Main Company Phone Number" ) );
+    $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_help`
+      (`ringcentral_help_id`, `ringcentral_help_field`, `ringcentral_help_help`)
+      VALUES (%d, %s, %s)",
+        1, "token_prefix", "Your installations unique prefix to a link token that will be added to the opt-in email and SMS confirmation URLs" ) );
+}
 /* ======================================= */
 /* build email confirmation page if needed */
 /* ======================================= */
