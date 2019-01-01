@@ -151,7 +151,7 @@ $current_action = $myListTable->current_action() ;
 if ($current_action !== 'delete' && $current_action !== 'edit') {
     ?>
     <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-    	<p>This page demonstrates the use of the RingCentral RingOut API.</p>
+    	<p>Manage your call me requests from this page.</p>
     </div>   
     <?php 
 }

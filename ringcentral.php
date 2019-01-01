@@ -23,17 +23,20 @@ GNU General Public License for more details.
 See License URI for full details.
 
 */
-error_reporting(E_ALL & ~E_NOTICE);
-ini_set('display_errors', 0);
+
+/* ================================ */
+/* bring in ring central constants  */
+/* ================================ */
+require_once("ringcentral-globals.inc");
 
 function ringcentral_js_add_script() {
-    $js_path = plugins_url('js/', __FILE__) . 'ringcentral-scripts.js' ;
+    $js_path = RINGCENTRAL_PLUGINDIR . 'js/ringcentral-scripts.js' ;
     wp_enqueue_script('ringcentral-js', $js_path) ;
 }
 add_action('init', 'ringcentral_js_add_script');
 
 function ringcentral_css_add_script() {    
-    $styles_path = plugins_url('css/', __FILE__) . 'ringcentral-custom.css' ;
+    $styles_path = RINGCENTRAL_PLUGINDIR . 'css/ringcentral-custom.css' ;
     wp_enqueue_style('ringcentral-css', $styles_path) ;
 }
 
@@ -52,7 +55,7 @@ function ringcentral_menu(){
         'manage_options',                           // Capability option
         'ringcentral_Admin',                        // Menu slug
         'ringcentral_config_page',                  // menu destination function call
-        plugin_dir_url(__FILE__) . 'images/ringcentral-icon.jpg', // menu icon path
+        RINGCENTRAL_PLUGINDIR . 'images/ringcentral-icon.jpg', // menu icon path
 //         'dashicons-phone', // menu icon path from dashicons library
         25 );                                       // menu position level         
      
@@ -89,9 +92,7 @@ function ringcentral_menu(){
         );    
 
 }  
- 
-$logo_path = plugins_url('images/', __FILE__) . 'ringcentral-logo.png' ;
- 
+  
 /* ========================================= */
 /* page / menu calling functions             */
 /* ========================================= */
@@ -99,13 +100,12 @@ $logo_path = plugins_url('images/', __FILE__) . 'ringcentral-logo.png' ;
 function ringcentral_config_page() {
     // check user capabilities
     if (!current_user_can('manage_options')) { return; }
-    global $logo_path ;
 ?>    
     <div class="wrap">
-        <img id='page_title_img' title="RingCentral Plugin" src="<?= $logo_path ;?>">
+        <img id='page_title_img' title="RingCentral Plugin" src="<?= RINGCENTRAL_LOGO ;?>">
         <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
         
-        <?php require_once("includes/ringcentral-config-page.inc"); ?>
+        <?php require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-config-page.inc"); ?>
         
     </div>
     <?php
@@ -115,13 +115,12 @@ function ringcentral_config_page() {
 function ringcentral_add_subscribers() {
     // check user capabilities
     if (!current_user_can('manage_options')) { return; }
-    global $logo_path ;
     ?>
     <div class="wrap">
-        <img id='page_title_img' title="RingCentral Plugin" src="<?= $logo_path ;?>">
+        <img id='page_title_img' title="RingCentral Plugin" src="<?= RINGCENTRAL_LOGO ;?>">
         <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
         
-       <?php require_once("includes/ringcentral-add-subscribers.inc"); ?>
+       <?php require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-add-subscribers.inc"); ?>
        
     </div>
     <?php
@@ -131,14 +130,13 @@ function ringcentral_add_subscribers() {
 function ringCentral_list_subscribers() {
     // check user capabilities
     if (!current_user_can('manage_options')) { return; }
-    global $logo_path ;
     ?>
         
     <div class="wrap">
-        <img id='page_title_img' title="RingCentral Plugin" src="<?= $logo_path ;?>">
+        <img id='page_title_img' title="RingCentral Plugin" src="<?= RINGCENTRAL_LOGO ;?>">
         <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
         
-       <?php require_once("includes/ringcentral-list-subscribers.inc"); ?>
+       <?php require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-list-subscribers.inc"); ?>
        
     </div>
     <?php
@@ -147,14 +145,13 @@ function ringCentral_list_subscribers() {
 function ringCentral_list_callme_requests() {
     // check user capabilities
     if (!current_user_can('manage_options')) { return; }
-    global $logo_path ;
     ?>
         
     <div class="wrap">
-        <img id='page_title_img' title="RingCentral Plugin" src="<?= $logo_path ;?>">
+        <img id='page_title_img' title="RingCentral Plugin" src="<?= RINGCENTRAL_LOGO ;?>">
         <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
         
-       <?php require_once("includes/ringcentral-list-callme.inc"); ?>
+       <?php require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-list-callme.inc"); ?>
        
     </div>
     <?php
@@ -192,7 +189,7 @@ function ringcentral_register_contacts_widget() {
   register_widget('ringcentral_contacts_widget') ;   
 }
 
-require_once("includes/ringcentral-contacts-widget.inc"); 
+require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-contacts-widget.inc"); 
 
 /* ================================= */
 /* Add action for the Call Me widget */
@@ -207,7 +204,7 @@ function ringcentral_register_callme_widget() {
      register_widget('ringcentral_callme_widget') ;
 }
 
-require_once("includes/ringcentral-callme-widget.inc"); 
+require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-callme-widget.inc"); 
 
 /* ============================================== */
 /* Add action hook for correspondence on new post */
@@ -227,21 +224,21 @@ function ringcentral_new_post_send_notifications( $post ) {
     // this is also triggered on a page publishing, so ensure that the type is a Post and then carry on    
     if (get_post_type($post->ID) === 'post') {    
         // only send out correspondence if set in control / admin
-        if ($result_rc->email_updates) { require_once("includes/ringcentral-send-mass-email.inc"); }    
-        if ($result_rc->mobile_updates) { require_once("includes/ringcentral-send-mass-mobile.inc"); }
+        if ($result_rc->email_updates) { require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-email.inc"); }    
+        if ($result_rc->mobile_updates) { require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-mobile.inc"); }
     }
 }
 /* ============================================= */
 /* Add registration hook for plugin installation */
 /* ============================================= */
 function ringcentral_install() {
-   require_once("includes/ringcentral-install.inc");
+    require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-install.inc");
 }
 /* ========================================= */
 /* Create default pages on plugin activation */
 /* ========================================= */
 function install_default_pages(){
-   require_once("includes/ringcentral-activation.inc");
+    require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-activation.inc");
 }
 
 register_activation_hook(__FILE__, 'ringcentral_install');
@@ -252,4 +249,17 @@ register_activation_hook(__FILE__, 'install_default_pages');
 /* ====================================== */
 require_once("includes/ringcentral-functions.inc");
 
+/* ====================================================== */
+/* add link on plugin details line for buying Pro Version */
+/* ====================================================== */
+add_filter('plugin_row_meta', 'rc_get_pro', 10, 2);
+
+//Add a link on the plugin control line after 'visit plugin site'
+function rc_get_pro($links, $file) {
+    if ( $file == RINGCENTRAL_PLUGIN_FILENAME ) {
+        $link_string = RINGCENTRAL_PRO_URL ;
+        $links[] = "<a href='$link_string' style='color: red' target='_blank'>" . esc_html__('Get Pro Version', 'RCCP_free') . '</a>';
+    }
+    return $links;
+}
 ?>

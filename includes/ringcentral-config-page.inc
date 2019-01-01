@@ -3,15 +3,22 @@
  * Copyright (C) 2018 RingCentral Inc.
  *
  */
-
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_NOTICE);
 ini_set('display_errors', 0);
 
 /* ========= */
 /* show_form */
 /* ========= */
 Function show_form($message, $label = "", $color = "#008EC2") {	
-	global $print_again, $wpdb;    ?>		
+	global $print_again, $wpdb;    ?>    
+    
+    <form action="<?php echo RINGCENTRAL_PRO_URL ?>" target="_blank" style="padding-left: 15%;">
+        <?php 
+        $btn_attributes = array( "style" => "background: red; border-color: #006799; color: #fff;" ); 
+        submit_button("Get Pro Version","","submit","",$btn_attributes);
+        ?>        
+    </form>
+    	
 	<form action="" method="post" >
 	<table class="TableOverride" >
 		<tr class="TableOverride">
@@ -220,8 +227,8 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 		<td colspan="2" align="center">			
 			<br/>
 			<?php 
-			$other_attributes = array( "style" => "background: #008ec2; border-color: #006799; color: #fff;" );
-			submit_button("Save Settings","","submit","",$other_attributes); ?>
+			$btn_attributes = array( "style" => "background: #008ec2; border-color: #006799; color: #fff;" );
+			submit_button("Save Settings","","submit","",$btn_attributes); ?>
 			<br/><br/>
 		</td>
 	</tr>

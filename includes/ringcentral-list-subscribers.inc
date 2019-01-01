@@ -5,7 +5,7 @@
  */ 
 
 error_reporting(E_ALL & ~E_NOTICE);
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 
 global $print_again, $wpdb;  
 
@@ -173,7 +173,7 @@ $current_action = $myListTable->current_action() ;
 if ($current_action !== 'delete' && $current_action !== 'edit') {
     ?>
     <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-    	<p>This page demonstrates the use of the <tt><a href="http://codex.wordpress.org/Class_Reference/WP_List_Table" target="_blank" style="text-decoration:none;">WP_List_Table</a></tt> class in plugins.</p>
+    	<p>Manage your subscriber information here</p>
     </div>   
     <?php 
 }
@@ -185,12 +185,12 @@ if ($current_action === 'delete') {
 
 if ($current_action === 'edit') {
     // bring in the edit form
-    $edit_path = plugins_url('/', __FILE__) . 'ringcentral-edit-subscribers.inc' ;    
+    $edit_path = RINGCENTRAL_PLUGIN_INCLUDES . 'ringcentral-edit-subscribers.inc' ;    
     require_once($edit_path);
 } else {
     ?>     
     <h2><?php echo 'Subscribers' ; ?> 
-    	<a class="add-new-h2" href="http://ringc.paladin-bs.com/wp-admin/admin.php?page=ringcentral_add_subs">Add New</a>
+    	<a class="add-new-h2" href="http://rccp-free.paladin-bs.com/wp-admin/admin.php?page=ringcentral_add_subs">Add New</a>
     </h2>    
     <?php echo $message; ?>             
     <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
