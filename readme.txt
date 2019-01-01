@@ -7,7 +7,7 @@ Stable tag:        1.0
 Requires PHP:      5.6
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
-Plugin to 
+This plugin allows for the use of the Ring Central communication tools platform based on the Ring Central PHP API.
 == Description ==
 This plugin allows for the use of the Ring Central communication tools platform based on the Ring Central PHP API.
 
@@ -22,8 +22,12 @@ Use WordPress' Add New Plugin feature, searching "RCCP Free", or download the ar
 Currently, yes. We are working on another edition that will allow for account only holders to make use of this plug in, but currently you do need to have a developer account. 
 == Screenshots ==
 1. The Admin Configurations screen
-2. The Subscribers list management screen
-3. The Call request list management screen
+2. The Admin Configurations screen with Embedded Phone Tool enabled
+3. Manually add a new newsletter subscriber
+4. Generated opt-in eMail for newsletter subscriber
+5. Manager Subscribers list display
+6. Newsletter Signup Widget on Public side of website
+7. Call Me Request Widget on Public side of website
 == Changelog ==
 = 1.0 =
 * Initial version
