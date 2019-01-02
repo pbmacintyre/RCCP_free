@@ -98,7 +98,7 @@ if (!$row_exists) {
 /* ======================================= */
 /* build email confirmation page if needed */
 /* ======================================= */
-$new_page_title = 'Email Confirmation';
+$new_page_title = 'eMail Confirmation';
 $new_page_content = 'email-confirmed ... thanks for that !';
 $new_page_template = '';
 $page_check = get_page_by_title($new_page_title);
@@ -118,7 +118,7 @@ if(!isset($page_check->ID)){
 /* =================================================== */
 /* build email unsubscribe confirmation page if needed */
 /* =================================================== */
-$new_page_title = 'Email Unsubscribe';
+$new_page_title = 'eMail Unsubscribe';
 $new_page_content = 'You have been unsubscribed from the email list ... you may still be on the SMS text distribution list.';
 $new_page_template = '';
 $page_check = get_page_by_title($new_page_title);

@@ -26,13 +26,9 @@ class RC_CallMe_List_Table extends WP_List_Table {
     
     function column_default($item, $column_name) {
         return $item[$column_name];
-    }
-    
-    function column_mobile($item) {
-        $mobile_number = $item['mobile'] ;
-        $url = plugins_url('/', __FILE__) . "callme_list_ringout.php?to_number=" . urlencode($mobile_number) ;
-        
-        return "<a href='$url'>$mobile_number</a>";
+    }    
+    function column_mobile($item) {              
+        return $item['mobile'] ;
     }    
     function column_call_reason($item) {
         return '<em>' . $item['call_reason'] . '</em>';
@@ -61,7 +57,7 @@ class RC_CallMe_List_Table extends WP_List_Table {
         $columns = array(
             'cb'                => '<input type="checkbox" />', //Render a checkbox instead of text
             'full_name'         => 'Requested Caller Name',            
-            'mobile'            => 'Mobile # (click to call)',            
+            'mobile'            => 'Mobile #',            
             'call_reason'       => 'Call Reason'            
         );
         return $columns;
@@ -166,7 +162,9 @@ if ($current_action === 'delete') {
 //     $edit_path = plugins_url('/', __FILE__) . 'ringcentral-edit-subscribers.inc' ;    
 //     require_once($edit_path);
 // } else {
-echo $message; ?>             
+?>
+    <h2>Call Me Requests</h2>   
+    <?php echo $message; ?>             
 <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 <form method="get">
     <!-- For plugins, we also need to ensure that the form posts back to our current page -->
