@@ -170,7 +170,7 @@ function ringcentral_ringout($to) {
 /* ============================== */
 function build_help($field) {
     global $wpdb;
-    $image_source = RINGCENTRAL_PLUGINDIR . 'images/question_mark.png' ;
+    $image_source = RINGCENTRAL_PLUGINURL . 'images/question_mark.png' ;
     
     $result_rc_help = $wpdb->get_row( $wpdb->prepare("SELECT ringcentral_help_help AS help_text
             FROM `ringcentral_help` WHERE `ringcentral_help_field` = %s", $field) );
