@@ -86,7 +86,7 @@ class ringcentral_callme_widget extends WP_Widget {
         if ($call_reason == "") {
             $print_again = true;
             $label = "call_reason";
-            $callme_widget_return_message = "Please preovide a summary of your call request.";
+            $callme_widget_return_message = "Please provide a summary of your call request.";
         }   
         if ($mobile == "") {
             $print_again = true;
