@@ -29,10 +29,10 @@ See License URI for full details.
 /* ============================== */
 
 if(!defined('RINGCENTRAL_PLUGINDIR')){
-    define('RINGCENTRAL_PLUGINDIR', plugin_dir_url(__FILE__) ) ;
+    define('RINGCENTRAL_PLUGINDIR', plugin_dir_path(__FILE__) ) ;
 }
 if(!defined('RINGCENTRAL_PLUGIN_INCLUDES')){
-    define('RINGCENTRAL_PLUGIN_INCLUDES', plugin_dir_url(__FILE__) . "includes/" ) ;
+    define('RINGCENTRAL_PLUGIN_INCLUDES', plugin_dir_path(__FILE__) . "includes/" ) ;
 }
 if(!defined('RINGCENTRAL_PLUGIN_FILENAME')){
     define ('RINGCENTRAL_PLUGIN_FILENAME', plugin_basename(dirname(__FILE__) . '/ringcentral.php') ) ;
