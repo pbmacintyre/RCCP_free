@@ -44,7 +44,7 @@ if(!defined('RINGCENTRAL_PRO_URL')){
     define ('RINGCENTRAL_PRO_URL', 'https://paladin-bs.com/product/rccp-pro/') ;
 }
 if(!defined('RINGCENTRAL_LOGO')){
-    define ('RINGCENTRAL_LOGO', RINGCENTRAL_PLUGINDIR . 'images/ringcentral-logo.png' ) ;
+    define ('RINGCENTRAL_LOGO', RINGCENTRAL_PLUGINURL . 'images/ringcentral-logo.png' ) ;
 }
 /* ============================================ */
 if(!defined('RINGCENTRAL_SPACER')){
