@@ -41,7 +41,7 @@ class RC_List_Table extends WP_List_Table {
         return $return_string ;
     }
     function column_mobile($item) {
-        return '<em>' . $item['mobile'] . '</em>';
+        return '<em><a href="sms:'.$item['mobile'].'">' . $item['mobile'] . '</a></em>';
     }
     function column_mobile_optin_date($item) {
         if ($item['mobile_optin_date']) {
