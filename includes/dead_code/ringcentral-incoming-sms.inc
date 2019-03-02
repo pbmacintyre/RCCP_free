@@ -1,10 +1,8 @@
 <?php
 /**
- * Copyright (C) 2018 RingCentral Inc.
+ * Copyright (C) 2019 Paladin Business Solutions
  *
  */
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 // Get Validation Token
 $v_Token = isset($_SERVER['HTTP_VALIDATION_TOKEN']) ? $_SERVER['HTTP_VALIDATION_TOKEN'] : '' ;

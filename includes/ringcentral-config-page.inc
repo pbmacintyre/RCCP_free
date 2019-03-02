@@ -1,10 +1,8 @@
 <?php
 /**
- * Copyright (C) 2018 RingCentral Inc.
+ * Copyright (C) 2019 Paladin Business Solutions
  *
  */
-error_reporting(E_ALL & ~E_NOTICE);
-ini_set('display_errors', 0);
 
 /* ========= */
 /* show_form */
@@ -30,9 +28,8 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 	    echo "<font color='$color'><strong>" . $message . "</strong></font>";
 	}
 	
-	$result_rc = $wpdb->get_row( $wpdb->prepare("SELECT * FROM `ringcentral_control`
-        WHERE `ringcentral_control_id` = %d", 1)
-	    );
+	$result_rc = $wpdb->get_row( $wpdb->prepare("SELECT * FROM `ringcentral_control` WHERE `ringcentral_control_id` = %d", 1) );
+	
 	?></td>
 	</tr>	
 	<tr class="TableOverride">
@@ -66,7 +63,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
                 }
           }
             ?>></td>
-	</tr>
+	</tr>    
 	<tr class="TableOverride">
 		<td class="left_col">
 			<p style='display: inline; <?php if ($label == "mobile_updates") echo "color:red"; ?>' >Send Post Updates over SMS Text?</p>			
@@ -83,6 +80,26 @@ Function show_form($message, $label = "", $color = "#008EC2") {
           }
             ?>></td>
 	</tr>
+    
+    <tr class="TableOverride">
+        <td class="left_col">
+            <p style='display: inline; <?php if ($label == "ringcentral_sandbox") echo "color:red"; ?>' >Use the RingCentral SANDBOX SDK?</p>  
+            
+            <?php echo build_help("ringcentral_sandbox") ; ?>
+                      
+        </td>
+        <td class="right_col"><input type="checkbox" name="ringcentral_sandbox" <?php 
+        if ($print_again) { 
+            if ($_POST['ringcentral_sandbox'] == "on") {
+              echo 'CHECKED';
+            } 
+          } else {             
+              if ($result_rc->ringcentral_sandbox  == 1) {
+                  echo 'CHECKED' ;
+                }
+          }
+            ?>></td>
+    </tr>
 	<?php /* ==============================================  ?>	
 	<tr class="TableOverride">
 		<td class="left_col">
@@ -245,15 +262,22 @@ Function check_form() {
 	$label = "" ;
 	$message = "" ;
 	
+	if ($_POST['ringcentral_sandbox'] == "on") {
+	    $sandbox = 1;
+	} else {
+	    $sandbox = 0;
+	}    
+	
 	$rc_handshake = array(
 	    "client_id"        => $_POST['client_id'],
 	    "client_secret"    => $_POST['client_secret'],
 	    "user_name"        => $_POST['ringcentral_user_name'] ,
 	    "extension"        => $_POST['ringcentral_extension'] ,
-	    "password"         => $_POST['ringcentral_password'] 	    
+	    "password"         => $_POST['ringcentral_password'] , 	    
+	    "sandbox"          => $sandbox 	    
 	);
 	
-	/* data integrity checks */	
+// 	/* data integrity checks */	
 	if (ringcentral_validate_sdk($rc_handshake) == false) {
 	    $print_again = true;
 	    $label = "";
@@ -319,7 +343,7 @@ Function check_form() {
             $mobile_updates = 1;
         } else {
             $mobile_updates = 0;
-        }        
+        } 
         
         $token_prefix          = $_POST['token_prefix'] ;
         
@@ -328,10 +352,10 @@ Function check_form() {
 
         $config_sql = $wpdb->prepare("UPDATE `ringcentral_control` SET
             `embedded_phone` = %d, `email_updates` = %d, `mobile_updates` = %d, `client_id` = %s, `client_secret` = %s,
-            `ringcentral_user_name` = %s, `ringcentral_extension` = %d, `ringcentral_password` = %s, `token_prefix` = %s
+            `ringcentral_user_name` = %s, `ringcentral_extension` = %d, `ringcentral_password` = %s, `ringcentral_sandbox` = %d, `token_prefix` = %s
             WHERE `ringcentral_control_id` = %d", $embedded_phone, $email_updates, $mobile_updates, $rc_handshake['client_id'], $rc_handshake['client_secret'], 
-            $rc_handshake['user_name'], $rc_handshake['extension'], $rc_handshake['password'], $token_prefix, 1) ;
-        
+            $rc_handshake['user_name'], $rc_handshake['extension'], $rc_handshake['password'], $sandbox, $token_prefix, 1) ;
+                
         $wpdb->query( $config_sql ); 
         
 	    $color = "#53DF00";

@@ -1,8 +1,8 @@
 === RingCentral Communications Plugin - FREE ===
 Contributors:      pbmacintyre
 Tags:              Ring Central Communications API tools
-Requires at least: 4.4
-Tested up to:      5.0
+Requires at least: 4.1
+Tested up to:      5.1
 Stable tag:        1.0
 Requires PHP:      5.6
 License:           GPLv2 or later
@@ -56,6 +56,7 @@ or collectively. List shows caller name, phone number to call back, reason for t
 Default WordPress pages are created upon activation of the plugin. Very basic confirmation of email and SMS opt-in pages 
 are provided. Basic pages for confirming opt-out request are also provided.
 Page names are: 'eMail Confirmation', 'eMail Unsubscribe', 'Mobile Confirmation', and 'Mobile Unsubscribe'
+NOTE:  permainks must be set to "Post name" 
 </li>
 
 <li>New Database tables are created

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2018 RingCentral Inc.
+ * Copyright (C) 2019 Paladin Business Solutions
  *
  */
 
@@ -22,9 +22,15 @@ function ringcentral_sdk() {
     $ringcentral_user_name = $result_rc->ringcentral_user_name ;
     $ringcentral_extension = $result_rc->ringcentral_extension ;
     $ringcentral_password  = $result_rc->ringcentral_password ;
+    $ringcentral_sandbox   = $result_rc->ringcentral_sandbox ;
     
-    // Setup Client
-    $sdk = new RingCentral\SDK\SDK($client_id, $client_secret, RingCentral\SDK\SDK::SERVER_PRODUCTION);
+    if ($ringcentral_sandbox == 1) {
+        // Use sandbox Client
+        $sdk = new RingCentral\SDK\SDK($client_id, $client_secret, RingCentral\SDK\SDK::SERVER_SANDBOX);        
+    } else {
+        // Use Production Client
+        $sdk = new RingCentral\SDK\SDK($client_id, $client_secret, RingCentral\SDK\SDK::SERVER_PRODUCTION);
+    }    
     
     // Login via API
     if (!$sdk->platform()->loggedIn()) {
@@ -40,8 +46,13 @@ function ringcentral_validate_sdk($rc_handshake) {
     // Include Libraries
     require('vendor/autoload.php');
     
-    // Setup Client
-    $sdk = new RingCentral\SDK\SDK($rc_handshake['client_id'], $rc_handshake['client_secret'], RingCentral\SDK\SDK::SERVER_PRODUCTION);
+    if ($rc_handshake['sandbox'] == 1) {
+        // Use sandbox Client        
+        $sdk = new RingCentral\SDK\SDK($rc_handshake['client_id'], $rc_handshake['client_secret'], RingCentral\SDK\SDK::SERVER_SANDBOX);
+    } else {
+        // Use Production Client
+        $sdk = new RingCentral\SDK\SDK($rc_handshake['client_id'], $rc_handshake['client_secret'], RingCentral\SDK\SDK::SERVER_PRODUCTION);        
+    }
     
     // attempt to Login via API
     try {

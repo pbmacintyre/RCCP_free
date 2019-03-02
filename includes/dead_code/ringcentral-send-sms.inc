@@ -1,26 +1,27 @@
 <?php
 /**
- * Copyright (C) 2018 RingCentral Inc.
+ * Copyright (C) 2019 Paladin Business Solutions
  *
  */
-error_reporting(E_ALL);
-ini_set('display_errors', 0);
+
+/* ================================= */
+/* Bootstrap code begins             */
+/* ================================= */
+global $wpdb;
 
 $website_name = get_bloginfo('name') ;
 
-$mobile_list = $wpdb->get_results( $wpdb->prepare("SELECT `ringcentral_contacts_id`, `full_name`
-    FROM `ringcentral_contacts`
-    WHERE `mobile` <> %s AND `mobile_confirmed` = %d",
-    "", 1 )
-    ); 
+$email_sql = "SELECT `ringcentral_contacts_id`,`full_name`,`mobile` FROM `ringcentral_contacts` "; 
+$email_sql .= "WHERE `mobile` <> '' AND `mobile_confirmed` = 1 ";
+$email_list = $wpdb->get_results($email_sql, ARRAY_A);
 
 $sdk = ringcentral_sdk() ;
 
-foreach ( $mobile_list as $mobile_contact ) {
-    $unsub_url = plugins_url('/', __FILE__) . "ringcentral-unsubscribe.php?contact_id=" . $mobile_contact['ringcentral_contacts_id'];
+foreach ( $email_list as $email_contact ) {
+    $unsub_url = plugins_url('/', __FILE__) . "ringcentral-unsubscribe.php?contact_id=" . $email_contact['ringcentral_contacts_id'];
     $unsub_url .= "&method=2" ;
     
-    $message = "hi $mobile_contact[full_name] : A new post has been added to:  $website_name \n\n";
+    $message = "hi $email_contact[full_name] : A new post has been added to:  $website_name \n\n";
     $message .= $post->post_title . ": " . $post_url . "\n\n";
     $message .= "To unsubscribe follow this link: " ;
     $message .= "$unsub_url ";
@@ -28,7 +29,7 @@ foreach ( $mobile_list as $mobile_contact ) {
     try {
         $apiResponse = $sdk->platform()->post('/account/~/extension/~/sms',
             array('from' => array('phoneNumber' => '+13128589779'),
-                'to'   => array( array('phoneNumber' => $mobile_contact['mobile']) ),
+                'to'   => array( array('phoneNumber' => $email_contact['mobile']) ),
                 'text' => $message ) );
     } catch (\RingCentral\SDK\Http\ApiException $e) {
         
@@ -44,7 +45,6 @@ foreach ( $mobile_list as $mobile_contact ) {
         // print '  Message: ' . $e->apiResponse->response()->error() . PHP_EOL;
         // $message = '  Message: ' . $e->apiResponse->response()->error() . PHP_EOL;
         // craft a friendly message here.
-        $return_message = "There was an error broadcasting to the mobile list.";
+        $return_message = "There was an error broadcasting to the SMS list.";
     }
 }
-?>

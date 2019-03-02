@@ -1,14 +1,14 @@
 <?php 
 /*
- Plugin Name: RCCP Free
- Plugin URI:  https://ringcentral.com/
- Description: RingCentral Communications Plugin - FREE
- Author:      Peter MacIntyre
- Version:     0.7.1
- Author URI:  https://paladin-bs.com/peter-macintyre/
- Details URI: https://paladin-bs.com
- License:     GPL2
- License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Plugin Name: RCCP Free
+Plugin URI:  https://ringcentral.com/
+Description: RingCentral Communications Plugin - FREE
+Author:      Peter MacIntyre
+Version:     1.2.0
+Author URI:  https://paladin-bs.com/peter-macintyre/
+Details URI: https://paladin-bs.com
+License:     GPL2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 RCCP Free is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
  
 See License URI for full details.
-
 */
 
 /* ============================== */
@@ -33,6 +32,7 @@ if(!defined('RINGCENTRAL_PLUGINDIR')){
 }
 if(!defined('RINGCENTRAL_PLUGINURL')){
     define('RINGCENTRAL_PLUGINURL', plugin_dir_url(__FILE__) ) ;
+    //  http://oldwp.paladin-bs.com/wp-content/plugins/RCCP_free/
 }
 if(!defined('RINGCENTRAL_PLUGIN_INCLUDES')){
     define('RINGCENTRAL_PLUGIN_INCLUDES', plugin_dir_path(__FILE__) . "includes/" ) ;
@@ -51,17 +51,18 @@ if(!defined('RINGCENTRAL_SPACER')){
     $spacer = "<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; " ;
     define ('RINGCENTRAL_SPACER', $spacer) ;
 }
+
 /* ================================= */
 /* set ring central supporting cast  */
 /* ================================= */
 function ringcentral_js_add_script() {
-    $js_path = RINGCENTRAL_PLUGINDIR . 'js/ringcentral-scripts.js' ;
+    $js_path = RINGCENTRAL_PLUGINURL . 'js/ringcentral-scripts.js' ;
     wp_enqueue_script('ringcentral-js', $js_path) ;
 }
 add_action('init', 'ringcentral_js_add_script');
 
 function ringcentral_css_add_script() {    
-    $styles_path = RINGCENTRAL_PLUGINDIR . 'css/ringcentral-custom.css' ;
+    $styles_path = RINGCENTRAL_PLUGINURL . 'css/ringcentral-custom.css' ;
     wp_enqueue_style('ringcentral-css', $styles_path) ;
 }
 
@@ -249,8 +250,8 @@ function ringcentral_new_post_send_notifications( $post ) {
     // this is also triggered on a page publishing, so ensure that the type is a Post and then carry on    
     if (get_post_type($post->ID) === 'post') {    
         // only send out correspondence if set in control / admin
-        if ($result_rc->email_updates) { require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-email.inc"); }    
-        if ($result_rc->mobile_updates) { require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-mobile.inc"); }
+        if ($result_rc->email_updates) { require_once(RINGCENTRAL_PLUGINURL . "includes/ringcentral-send-mass-email.inc"); }    
+        if ($result_rc->mobile_updates) { require_once(RINGCENTRAL_PLUGINURL . "includes/ringcentral-send-mass-mobile.inc"); }
     }
 }
 /* ============================================= */

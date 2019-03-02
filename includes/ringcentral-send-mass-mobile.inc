@@ -1,34 +1,31 @@
 <?php
 /**
- * Copyright (C) 2018 RingCentral Inc.
+ * Copyright (C) 2019 Paladin Business Solutions
  *
  */
-error_reporting(E_ALL);
-ini_set('display_errors', 0);
 
 $website_name = get_bloginfo('name') ;
 
-$mobile_list = $wpdb->get_results( $wpdb->prepare("SELECT `ringcentral_contacts_id`, `full_name`
-    FROM `ringcentral_contacts`
-    WHERE `mobile` <> %s AND `mobile_confirmed` = %d",
-    "", 1 )
-    ); 
+$mobile_list = $wpdb->get_results( $wpdb->prepare("SELECT `ringcentral_token`, `full_name`, `mobile`
+    FROM `ringcentral_contacts` WHERE `mobile` <> %s AND `mobile_confirmed` = %d", "", 1 ) ); 
 
 $sdk = ringcentral_sdk() ;
 
+$from = ringcentral_get_from();
+
 foreach ( $mobile_list as $mobile_contact ) {
-    $unsub_url = plugins_url('/', __FILE__) . "ringcentral-unsubscribe.php?contact_id=" . $mobile_contact['ringcentral_contacts_id'];
+    $unsub_url = RINGCENTRAL_PLUGINURL . "includes/ringcentral-unsubscribe.php?contact_id=" . $mobile_contact->ringcentral_token;
     $unsub_url .= "&method=2" ;
     
-    $message = "hi $mobile_contact[full_name] : A new post has been added to:  $website_name \n\n";
+    $message = "hi $mobile_contact->full_name : A new post has been added to:  $website_name \n\n";
     $message .= $post->post_title . ": " . $post_url . "\n\n";
     $message .= "To unsubscribe follow this link: " ;
     $message .= "$unsub_url ";
     
     try {
         $apiResponse = $sdk->platform()->post('/account/~/extension/~/sms',
-            array('from' => array('phoneNumber' => '+13128589779'),
-                'to'   => array( array('phoneNumber' => $mobile_contact['mobile']) ),
+            array('from' => array('phoneNumber' => $from),
+                'to'   => array( array('phoneNumber' => $mobile_contact->mobile) ),
                 'text' => $message ) );
     } catch (\RingCentral\SDK\Http\ApiException $e) {
         

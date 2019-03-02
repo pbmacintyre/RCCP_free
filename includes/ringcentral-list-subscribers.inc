@@ -1,11 +1,8 @@
 <?php
 /**
- * Copyright (C) 2018 RingCentral Inc.
+ * Copyright (C) 2019 Paladin Business Solutions
  *
  */ 
-
-error_reporting(E_ALL & ~E_NOTICE);
-ini_set('display_errors', 1);
 
 global $print_again, $wpdb;  
 
@@ -187,7 +184,7 @@ if ($current_action === 'edit') {
 } else {
     ?>     
     <h2><?php echo 'Subscribers' ; ?> 
-    	<a class="add-new-h2" href="http://rccp-free.paladin-bs.com/wp-admin/admin.php?page=ringcentral_add_subs">Add New</a>
+    	<a class="add-new-h2" href="admin.php?page=ringcentral_add_subs">Add New</a>
     </h2>    
     <?php echo $message; ?>             
     <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->

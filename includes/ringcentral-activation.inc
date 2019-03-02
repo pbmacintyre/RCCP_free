@@ -1,7 +1,7 @@
 <?php 
 /*
- } Copyright (C) 2018 RingCentral Inc.
- }
+ * Copyright (C) 2019 Paladin Business Solutions
+ *
  */
 
 global $wpdb;
@@ -19,6 +19,7 @@ $ringcentral_sql = "CREATE TABLE `ringcentral_control` (
   `ringcentral_user_name` varchar(50) NOT NULL,
   `ringcentral_extension` tinyint(4) NOT NULL,
   `ringcentral_password` varchar(50) NOT NULL,
+  `ringcentral_sandbox` TINYINT NOT NULL,
   `email_updates` tinyint(4) NOT NULL,
   `mobile_updates` tinyint(4) NOT NULL,
   `token_prefix` varchar(10) NOT NULL,
@@ -35,9 +36,9 @@ $row_exists = $wpdb->get_var($wpdb->prepare("SELECT `ringcentral_control_id` FRO
         WHERE `ringcentral_control_id` = %d", 1) );
 if (!$row_exists) {
     $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_control`
-      (`ringcentral_control_id`, `embedded_phone`, `email_updates`, `mobile_updates`)
-      VALUES (%d, %d, %d, %d )",
-        1, 1, 1, 0 )
+      (`ringcentral_control_id`,`embedded_phone`,`ringcentral_sandbox`,`email_updates`,`mobile_updates`)
+      VALUES (%d, %d, %d, %d, %d )",
+        1, 1, 0, 1, 0 )
         );
 }
 /* ================================= */
@@ -93,10 +94,15 @@ if (!$row_exists) {
     $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_help`
       (`ringcentral_help_id`, `ringcentral_help_field`, `ringcentral_help_help`)
       VALUES (%d, %s, %s)",
-        1, "token_prefix", "Your installations unique prefix to a link token that will be added to the opt-in email and SMS confirmation URLs" ) );
+        2, "token_prefix", "Your installations unique prefix to a link token that will be added to the opt-in email and SMS confirmation URLs" ) );
+    $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_help`
+      (`ringcentral_help_id`, `ringcentral_help_field`, `ringcentral_help_help`)
+      VALUES (%d, %s, %s)",
+        3, "ringcentral_sandbox", "Turn this checkbox ON if you want to use the Ring Central SANDBOX SDK, leave it off for Production use." ) );
 }
 /* ======================================= */
 /* build email confirmation page if needed */
+/* permainks must be set to "Post name"    */
 /* ======================================= */
 $new_page_title = 'eMail Confirmation';
 $new_page_content = 'email-confirmed ... thanks for that !';
@@ -119,7 +125,7 @@ if(!isset($page_check->ID)){
 /* build email unsubscribe confirmation page if needed */
 /* =================================================== */
 $new_page_title = 'eMail Unsubscribe';
-$new_page_content = 'You have been unsubscribed from the email list ... you may still be on the SMS text distribution list.';
+$new_page_content = 'You have been unsubscribed from the email list ... Sorry to see you go.';
 $new_page_template = '';
 $page_check = get_page_by_title($new_page_title);
 $new_page = array(
@@ -159,7 +165,7 @@ if(!isset($page_check->ID)){
 /* build mobile unsubscribe confirmation page if needed */
 /* ==================================================== */
 $new_page_title = 'Mobile Unsubscribe';
-$new_page_content = 'You have been unsubscribed from the mobile list ... you may still be on the email distribution list.';
+$new_page_content = 'You have been unsubscribed from the mobile list ... Sorry to see you go.';
 $new_page_template = '';
 $page_check = get_page_by_title($new_page_title);
 $new_page = array(

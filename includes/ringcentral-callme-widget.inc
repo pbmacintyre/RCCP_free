@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2018 RingCentral Inc.
+ * Copyright (C) 2019 Paladin Business Solutions
  *
  */
 class ringcentral_callme_widget extends WP_Widget {
