@@ -46,5 +46,7 @@ foreach ( $mobile_list as $mobile_contact ) {
         // craft a friendly message here.
         $return_message = "There was an error broadcasting to the mobile list => " . $apiResponse;
     }
+	// Sleep for 1.8 seconds to prevent 40/min penalty
+	usleep(1800000);
 }
 ?>

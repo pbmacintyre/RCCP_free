@@ -24,7 +24,7 @@ function ringcentral_sdk() {
     $ringcentral_password  = $result_rc->ringcentral_password ;
     
     // Setup Client
-    $sdk = new RingCentral\SDK\SDK($client_id, $client_secret, RingCentral\SDK\SDK::SERVER_SANDBOX);
+    $sdk = new RingCentral\SDK\SDK($client_id, $client_secret, RingCentral\SDK\SDK::SERVER_PRODUCTION);
     
     // Login via API
     if (!$sdk->platform()->loggedIn()) {
@@ -41,7 +41,7 @@ function ringcentral_validate_sdk($rc_handshake) {
     require('vendor/autoload.php');
     
     // Setup Client
-    $sdk = new RingCentral\SDK\SDK($rc_handshake['client_id'], $rc_handshake['client_secret'], RingCentral\SDK\SDK::SERVER_SANDBOX);
+    $sdk = new RingCentral\SDK\SDK($rc_handshake['client_id'], $rc_handshake['client_secret'], RingCentral\SDK\SDK::SERVER_PRODUCTION);
     
     // attempt to Login via API
     try {
@@ -170,7 +170,7 @@ function ringcentral_ringout($to) {
 /* ============================== */
 function build_help($field) {
     global $wpdb;
-    $image_source = RINGCENTRAL_PLUGINDIR . 'images/question_mark.png' ;
+    $image_source = RINGCENTRAL_PLUGINURL . 'images/question_mark.png' ;
     
     $result_rc_help = $wpdb->get_row( $wpdb->prepare("SELECT ringcentral_help_help AS help_text
             FROM `ringcentral_help` WHERE `ringcentral_help_field` = %s", $field) );

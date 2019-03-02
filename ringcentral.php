@@ -29,10 +29,13 @@ See License URI for full details.
 /* ============================== */
 
 if(!defined('RINGCENTRAL_PLUGINDIR')){
-    define('RINGCENTRAL_PLUGINDIR', plugin_dir_url(__FILE__) ) ;
+    define('RINGCENTRAL_PLUGINDIR', plugin_dir_path(__FILE__) ) ;
+}
+if(!defined('RINGCENTRAL_PLUGINURL')){
+    define('RINGCENTRAL_PLUGINURL', plugin_dir_url(__FILE__) ) ;
 }
 if(!defined('RINGCENTRAL_PLUGIN_INCLUDES')){
-    define('RINGCENTRAL_PLUGIN_INCLUDES', plugin_dir_url(__FILE__) . "includes/" ) ;
+    define('RINGCENTRAL_PLUGIN_INCLUDES', plugin_dir_path(__FILE__) . "includes/" ) ;
 }
 if(!defined('RINGCENTRAL_PLUGIN_FILENAME')){
     define ('RINGCENTRAL_PLUGIN_FILENAME', plugin_basename(dirname(__FILE__) . '/ringcentral.php') ) ;
@@ -41,7 +44,7 @@ if(!defined('RINGCENTRAL_PRO_URL')){
     define ('RINGCENTRAL_PRO_URL', 'https://paladin-bs.com/product/rccp-pro/') ;
 }
 if(!defined('RINGCENTRAL_LOGO')){
-    define ('RINGCENTRAL_LOGO', RINGCENTRAL_PLUGINDIR . 'images/ringcentral-logo.png' ) ;
+    define ('RINGCENTRAL_LOGO', RINGCENTRAL_PLUGINURL . 'images/ringcentral-logo.png' ) ;
 }
 /* ============================================ */
 if(!defined('RINGCENTRAL_SPACER')){
@@ -77,7 +80,7 @@ function ringcentral_menu(){
         'manage_options',                           // Capability option
         'ringcentral_Admin',                        // Menu slug
         'ringcentral_config_page',                  // menu destination function call
-        RINGCENTRAL_PLUGINDIR . 'images/ringcentral-icon.jpg', // menu icon path
+        RINGCENTRAL_PLUGINURL . 'images/ringcentral-icon.jpg', // menu icon path
 //         'dashicons-phone', // menu icon path from dashicons library
         25 );                                       // menu position level         
      

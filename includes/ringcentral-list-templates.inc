@@ -141,7 +141,7 @@ $current_action = $myListTable->current_action() ;
 if ($current_action !== 'delete' && $current_action !== 'edit') {
     ?>
     <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-    	<p>This page is meant for editing outgoing correspondence with your email & SMS connections.</p>
+    	<p>This page is meant for editing outgoing correspondence with your email &amp; SMS connections.</p>
     </div>
     <?php 
 }

@@ -28,10 +28,10 @@ class RC_CallMe_List_Table extends WP_List_Table {
         return $item[$column_name];
     }    
     function column_mobile($item) {              
-        return $item['mobile'] ;
+        return '<a href="tel:'.$item['mobile'].'">'.$item['mobile'].'</a>' ;
     }    
     function column_call_reason($item) {
-        return '<em>' . $item['call_reason'] . '</em>';
+        return '<em>' . stripslashes($item['call_reason']) . '</em>';
     }
     
     function column_full_name($item) {
