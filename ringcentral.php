@@ -23,6 +23,9 @@ GNU General Public License for more details.
 See License URI for full details.
 */
 
+// error_reporting(E_ALL);
+// ini_set('display_errors', 0);
+
 /* ============================== */
 /* Set RingCental Constant values */
 /* ============================== */
@@ -240,18 +243,20 @@ add_action( 'draft_to_publish', 'ringcentral_new_post_send_notifications');
 
 function ringcentral_new_post_send_notifications( $post ) {
     global $wpdb ;    
+    
     $result_rc = $wpdb->get_row( $wpdb->prepare("SELECT `email_updates`, `mobile_updates`
         FROM `ringcentral_control`
         WHERE `ringcentral_control_id` = %d", 1)
     );    
     // If this is a revision, don't send the correspondence.
     if (wp_is_post_revision( $post->ID )) return;
-    
+
     // this is also triggered on a page publishing, so ensure that the type is a Post and then carry on    
     if (get_post_type($post->ID) === 'post') {    
         // only send out correspondence if set in control / admin
         if ($result_rc->email_updates) { require_once(RINGCENTRAL_PLUGINURL . "includes/ringcentral-send-mass-email.inc"); }    
         if ($result_rc->mobile_updates) { require_once(RINGCENTRAL_PLUGINURL . "includes/ringcentral-send-mass-mobile.inc"); }
+        
     }
 }
 /* ============================================= */

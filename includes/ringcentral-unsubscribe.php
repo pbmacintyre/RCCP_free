@@ -27,14 +27,6 @@ if ($method == 1) { // email unsubscription coming in
 
 $wpdb->query($sql);
 
-/* check to see if the contact should be removed altogether */
-$contact = $wpdb->get_results( $wpdb->prepare("SELECT * FROM `ringcentral_contacts` WHERE `ringcentral_token` = %s", $contact_id ) );
-if ($contact->email == "" && $contact->mobile == "" && $contact->email_confirmed == 0 && $contact->mobile_confirmed == 0 ) {
-    $sql = $wpdb->prepare("DELETE FROM `ringcentral_contacts` WHERE `ringcentral_token` = %s", $contact_id) ;
-    $wpdb->query($sql);
-}
-
 // then re-direct to public page confirming the email removal.
 header("Location: $unsub_confirm_page");
-
 ?>

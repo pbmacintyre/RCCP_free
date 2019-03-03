@@ -27,15 +27,17 @@ foreach ( $mobile_list as $mobile_contact ) {
             array('from' => array('phoneNumber' => $from),
                 'to'   => array( array('phoneNumber' => $mobile_contact->mobile) ),
                 'text' => $message ) );
-    } catch (\RingCentral\SDK\Http\ApiException $e) {
         
-        // Getting error messages using PHP native interface
-        //                     print 'Expected HTTP Error: ' . $e->getMessage() . PHP_EOL;
+//         $wpdb->query( $wpdb->prepare("INSERT INTO `a_dumps` (`dump_content`)
+//         VALUES (%s)", serialize($apiResponse) ) );
+        
+    } catch (\RingCentral\SDK\Http\ApiException $e) {
         
         // In order to get Request and Response used to perform transaction:
         $apiResponse = $e->apiResponse();
-        //                     print_r($apiResponse->request());
-        //                     print_r($apiResponse->response());
+
+//         $wpdb->query( $wpdb->prepare("INSERT INTO `a_dumps` (`dump_content`) 
+//             VALUES (%s)", serialize($apiResponse) ) );
         
         // Another way to get message, but keep in mind, that there could be no response if request has failed completely
         // print '  Message: ' . $e->apiResponse->response()->error() . PHP_EOL;
