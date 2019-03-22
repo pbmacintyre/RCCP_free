@@ -23,9 +23,6 @@ GNU General Public License for more details.
 See License URI for full details.
 */
 
-// error_reporting(E_ALL);
-// ini_set('display_errors', 0);
-
 /* ============================== */
 /* Set RingCental Constant values */
 /* ============================== */
@@ -49,11 +46,6 @@ if(!defined('RINGCENTRAL_PRO_URL')){
 if(!defined('RINGCENTRAL_LOGO')){
     define ('RINGCENTRAL_LOGO', RINGCENTRAL_PLUGINURL . 'images/ringcentral-logo.png' ) ;
 }
-/* ============================================ */
-if(!defined('RINGCENTRAL_SPACER')){
-    $spacer = "<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; " ;
-    define ('RINGCENTRAL_SPACER', $spacer) ;
-}
 
 /* ================================= */
 /* set ring central supporting cast  */
@@ -70,9 +62,6 @@ function ringcentral_css_add_script() {
 }
 
 add_action('init', 'ringcentral_css_add_script');
-
-// call add action func on menu building function above.
-add_action('admin_menu', 'ringcentral_menu'); 
 
 /* ========================================= */
 /* Make top level menu                       */
@@ -125,6 +114,10 @@ function ringcentral_menu(){
 /* ========================================= */
 /* page / menu calling functions             */
 /* ========================================= */
+
+// call add action func on menu building function above.
+add_action('admin_menu', 'ringcentral_menu');
+
 // function for default Admin page
 function ringcentral_config_page() {
     // check user capabilities

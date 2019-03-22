@@ -143,6 +143,14 @@ Function show_form($message, $label = "", $color = "#008EC2") {
     </tr>	
 	<?php /* ============================================== */ ?>
 	<tr class="TableOverride">
+        <td class="left_col">
+            <p style='display: inline;' >Reveal Passwords:</p>
+        </td>
+        <td class="right_col">             
+            <button type="button" onmouseout="hide_it();" onmousedown="reveal_it();" onmouseup="hide_it();">Toggle Passwords</button>     
+        </td>
+    </tr>   
+    <tr class="TableOverride">
 		<td class="left_col">
 			<p style='display: inline; <?php if ($label == "client_id") echo "color:red"; ?>' >Client ID:</p>
 			<p style='color: red; display: inline'>*</p>
@@ -164,7 +172,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 			<p style='display: inline; <?php if ($label == "client_secret") echo "color:red"; ?>' >Client Secret Key:</p>
 			<p style='color: red; display: inline'>*</p>
 		</td>
-		<td class="right_col"><input type="password" name="client_secret" value="<?php 
+		<td class="right_col"><input type="password" name="client_secret" id="myClientSecret" value="<?php 
 		  if ($print_again) {
 		      echo $_POST['client_secret'];
           } else {             
@@ -172,7 +180,8 @@ Function show_form($message, $label = "", $color = "#008EC2") {
                 echo $result_rc->client_secret ;
               } 
           }
-            ?>"></td>
+            ?>" > 
+            </td>
 	</tr>	
 	<tr class="TableOverride">
 		<td class="left_col">
@@ -212,7 +221,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 			<p style='display: inline; <?php if ($label == "ringcentral_password") echo "color:red"; ?>' >RingCentral Password:</p>
 			<p style='color: red; display: inline'>*</p>
 		</td>
-		<td class="right_col"><input type="password" name="ringcentral_password" value="<?php 
+		<td class="right_col"><input type="password" name="ringcentral_password" id="myRCPassword" value="<?php 
 		  if ($print_again) {
 		      echo $_POST['ringcentral_password'];
           } else {             
