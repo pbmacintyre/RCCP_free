@@ -35,8 +35,7 @@ Function show_form($message, $label = "", $color = "green") {
 	</tr>
 	<tr class="TableOverride">
 		<td class="left_col">
-			<p style='display: inline; <?php if ($label == "email") echo "color:red"; ?>' >email:</p>
-			<p style='color: red; display: inline'>*</p>
+			<p style='display: inline; <?php if ($label == "email") echo "color:red"; ?>' >email:</p>			
 		</td>
 		<td class="right_col">
 			<input type="text" name="email" value="<?php if ($print_again) { echo $_POST['email']; } ?>">
@@ -44,8 +43,7 @@ Function show_form($message, $label = "", $color = "green") {
 	</tr>
 		<tr class="TableOverride">
 		<td class="left_col">
-			<p style='display: inline; <?php if ($label == "mobile") echo "color:red"; ?>' >mobile:</p>
-			<p style='color: red; display: inline'>*</p>
+			<p style='display: inline; <?php if ($label == "mobile") echo "color:red"; ?>' >mobile:</p>			
 		</td>
 		<td class="right_col">
 			<input type="text" name="mobile" onkeypress="return isNumberKey(event)" value="<?php if ($print_again) { echo $_POST['mobile']; } ?>">

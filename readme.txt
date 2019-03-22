@@ -18,48 +18,48 @@ This plugin allows for the use of the Ring Central communication tools platform 
 = Features =
 
 <ul>
-<li>RingCentral Embedded Phone app
+<li>RingCentral Embedded Phone app - 
 RingCentral's embedded phone app can be turned on or off and call can be made from within the WordPress Admin area.</li>
 
-<li>Call Me Request widget
+<li>Call Me Request widget - 
 Feature for adding a Call Me request Widget to the sidebar on the public side of your WordPress installation. This allows
-Website visitors to call you (using the RingCentral RingOut feature) and if no one is on-line to answer will store the 
-request on the admin side.</li>
+Website visitors to call you (using the RingCentral RingOut feature) and if no one is on-line to answer the request will 
+be stored on the admin side.</li>
 
-<li>Newsletter Sign Up widget
+<li>Newsletter Sign Up widget - 
 Feature for adding a Newsletter (New Post) signup Widget to the sidebar on the public side of your WordPress installation. 
 Asking for both email address and mobile number as communication points (double opt-in).
 </li>
 
-<li>New Newsletter (Post) announcements
+<li>New Newsletter (Post) announcements - 
 Based on configuration settings, you can send out automatic announcements to your collected newsletter list based on 
 their provided (double opt-in) contact information: email and / or mobile.
 </li>
 
-<li>Manually add subscribers
+<li>Manually add subscribers - 
 Feature to manually add to your list of Newsletter announcement subscribers with name email and mobile number. 
 The new subscriber will still have to opt-in to the list. 
 </li>
 
-<li>List / Manage subscribers
+<li>List / Manage subscribers - 
 Feature to display your existing list of Newsletter announcement subscribers. You can delete individually 
 or collectively. No edit feature as changes will need to be initiated by the subscriber and re-validate via 
 the opt-in process.
 </li>
 
-<li>List / Manage Call Me Requests 
+<li>List / Manage Call Me Requests -  
 Feature to display your existing list of Call Me requests. You can delete individually 
 or collectively. List shows caller name, phone number to call back, reason for the call.
 </li>
 
-<li>Default pages are created for you to customize
+<li>Default pages are created for you to customize - 
 Default WordPress pages are created upon activation of the plugin. Very basic confirmation of email and SMS opt-in pages 
 are provided. Basic pages for confirming opt-out request are also provided.
 Page names are: 'eMail Confirmation', 'eMail Unsubscribe', 'Mobile Confirmation', and 'Mobile Unsubscribe'
 NOTE:  permainks must be set to "Post name" 
 </li>
 
-<li>New Database tables are created
+<li>New Database tables are created - 
 New tables are created in the database and seeded with basic starting data in order for the plugin to operate 
 correctly. All table names are prefixed by 'ringcentral_'. The plugin drops these tables if the plugin is ever
 deleted, so be sure to save any data if you ever plan on deleting the plugin.
@@ -88,9 +88,12 @@ Use WordPress' Add New Plugin feature, searching "RCCP Free", or download the ar
 2. Upload `RCCP-Free` directory to the '/wp-content/plugins/' directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
 4. New menu item should appear in the 'Admin' top level menu
+
 == Frequently Asked Questions ==
 = Do I need a Ring Central Developer account =
-Currently, yes. We are working on another edition that will allow for account only holders to make use of this plug in, but currently you do need to have a developer account. 
+Currently, yes. We are working on another edition that will allow for account only holders to make 
+use of this plug in, but currently you do need to have a developer account. 
+
 == Screenshots ==
 1. The Admin Configurations screen
 2. The Admin Configurations screen with Embedded Phone Tool enabled
