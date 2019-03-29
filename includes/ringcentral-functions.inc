@@ -189,4 +189,23 @@ function build_help($field) {
     $out_string = "<img src='$image_source' title='$result_rc_help->help_text' />" ;
     return $out_string ;
 }
+
+/* ============================= */
+/* show / hide "Get Pro" button  */
+/* ============================= */
+function showHide_GetPro() {
+    
+    $remote_string = "http://paladin-bs.com/check_rccp_free_pro.php";
+    $args = array('timeout' => 5 );
+//     $response = wp_remote_get($remote_string, $args);
+    
+    $showHide = wp_remote_retrieve_body( wp_remote_get($remote_string, $args) ) ;
+                
+    if ($showHide == 'show') {
+        $_SESSION['showpro'] = TRUE;
+    } else {
+        $_SESSION['showpro'] = FALSE;
+    }
+    return ;
+}
 ?>

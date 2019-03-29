@@ -1,4 +1,5 @@
 <?php 
+session_start();
 /*
 Plugin Name: RCCP Free
 Plugin URI:  https://ringcentral.com/
@@ -110,7 +111,7 @@ function ringcentral_menu(){
         );    
 
 }  
-  
+
 /* ========================================= */
 /* page / menu calling functions             */
 /* ========================================= */
@@ -273,17 +274,24 @@ register_activation_hook(__FILE__, 'install_default_pages');
 /* ====================================== */
 require_once("includes/ringcentral-functions.inc");
 
-/* ====================================================== */
-/* add link on plugin details line for buying Pro Version */
-/* ====================================================== */
-add_filter('plugin_row_meta', 'rc_get_pro', 10, 2);
+/* ===================================== */
+/* Check if the pro version is available */
+/* ===================================== */
+showHide_GetPro();
 
-//Add a link on the plugin control line after 'visit plugin site'
-function rc_get_pro($links, $file) {
-    if ( $file == RINGCENTRAL_PLUGIN_FILENAME ) {
-        $link_string = RINGCENTRAL_PRO_URL ;
-        $links[] = "<a href='$link_string' style='color: red' target='_blank'>" . esc_html__('Get Pro Version', 'RCCP_free') . '</a>';
+if ($_SESSION['showpro']) { 
+    /* ====================================================== */
+    /* add link on plugin details line for buying Pro Version */
+    /* ====================================================== */
+    add_filter('plugin_row_meta', 'rc_get_pro', 10, 2);
+    
+    //Add a link on the plugin control line after 'visit plugin site'
+    function rc_get_pro($links, $file) {
+        if ( $file == RINGCENTRAL_PLUGIN_FILENAME ) {
+            $link_string = RINGCENTRAL_PRO_URL ;
+            $links[] = "<a href='$link_string' style='color: red' target='_blank'>" . esc_html__('Get Pro Version', 'RCCP_free') . '</a>';
+        }
+        return $links;
     }
-    return $links;
 }
 ?>
