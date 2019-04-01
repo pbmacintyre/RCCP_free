@@ -7,11 +7,10 @@ Stable tag:        1.0
 Requires PHP:      5.6
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
-This plugin allows for the use of the Ring Central communication tools platform based on the Ring Central PHP API.
-== Description ==
 
-= Pro Version =
-* <a target="_blank" href="https://paladin-bs.com/product/rccp-pro/">https://paladin-bs.com/product/rccp-pro/</a>
+This plugin allows for the use of the Ring Central communication tools platform based on the Ring Central PHP API.
+
+== Description ==
 
 This plugin allows for the use of the Ring Central communication tools platform based on the Ring Central PHP API.
 
@@ -19,32 +18,34 @@ This plugin allows for the use of the Ring Central communication tools platform 
 
 <ul>
 <li>RingCentral Embedded Phone app - 
-RingCentral's embedded phone app can be turned on or off and call can be made from within the WordPress Admin area.</li>
+RingCentral's embedded phone app can be turned on or off and call can be made from within the 
+WordPress Admin area.</li>
 
 <li>Call Me Request widget - 
-Feature for adding a Call Me request Widget to the sidebar on the public side of your WordPress installation. This allows
-Website visitors to call you (using the RingCentral RingOut feature) and if no one is on-line to answer the request will 
-be stored on the admin side.</li>
+Feature for adding a Call Me request Widget to the sidebar on the public side of your WordPress 
+installation. This allows Website visitors to call you (using the RingCentral RingOut feature) 
+and if no one is on-line to answer the request will be stored on the admin side.</li>
 
 <li>Newsletter Sign Up widget - 
-Feature for adding a Newsletter (New Post) signup Widget to the sidebar on the public side of your WordPress installation. 
-Asking for both email address and mobile number as communication points (double opt-in).
+Feature for adding a Newsletter (New Post) signup Widget to the sidebar on the public side of 
+your WordPress installation. Asking for both email address and mobile number as communication 
+points (double opt-in).
 </li>
 
 <li>New Newsletter (Post) announcements - 
-Based on configuration settings, you can send out automatic announcements to your collected newsletter list based on 
-their provided (double opt-in) contact information: email and / or mobile.
+Based on configuration settings, you can send out automatic announcements to your collected 
+newsletter list based on their provided (double opt-in) contact information: email and / or mobile.
 </li>
 
 <li>Manually add subscribers - 
-Feature to manually add to your list of Newsletter announcement subscribers with name email and mobile number. 
-The new subscriber will still have to opt-in to the list. 
+Feature to manually add to your list of Newsletter announcement subscribers with name email and 
+mobile number. The new subscriber will still have to opt-in to the list. 
 </li>
 
 <li>List / Manage subscribers - 
-Feature to display your existing list of Newsletter announcement subscribers. You can delete individually 
-or collectively. No edit feature as changes will need to be initiated by the subscriber and re-validate via 
-the opt-in process.
+Feature to display your existing list of Newsletter announcement subscribers. You can delete 
+individually or collectively. No edit feature as changes will need to be initiated by the 
+subscriber and re-validate via the opt-in process.
 </li>
 
 <li>List / Manage Call Me Requests -  
@@ -53,16 +54,17 @@ or collectively. List shows caller name, phone number to call back, reason for t
 </li>
 
 <li>Default pages are created for you to customize - 
-Default WordPress pages are created upon activation of the plugin. Very basic confirmation of email and SMS opt-in pages 
-are provided. Basic pages for confirming opt-out request are also provided.
-Page names are: 'eMail Confirmation', 'eMail Unsubscribe', 'Mobile Confirmation', and 'Mobile Unsubscribe'
-NOTE:  permainks must be set to "Post name" 
+Default WordPress pages are created upon activation of the plugin. Very basic confirmation of 
+email and SMS opt-in pages are provided. Basic pages for confirming opt-out request are also provided.
+Page names are: 'eMail Confirmation', 'eMail Unsubscribe', 'Mobile Confirmation', and 
+'Mobile Unsubscribe'  NOTE:  permainks must be set to "Post name" 
 </li>
 
 <li>New Database tables are created - 
-New tables are created in the database and seeded with basic starting data in order for the plugin to operate 
-correctly. All table names are prefixed by 'ringcentral_'. The plugin drops these tables if the plugin is ever
-deleted, so be sure to save any data if you ever plan on deleting the plugin.
+New tables are created in the database and seeded with basic starting data in order for the 
+plugin to operate correctly. All table names are prefixed by 'ringcentral_'. The plugin drops 
+these tables if the plugin is ever deleted, so be sure to save any data if you ever plan on 
+deleting the plugin.
 </li>
 
 </ul>
