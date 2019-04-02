@@ -8,9 +8,9 @@
 /* show_form */
 /* ========= */
 Function show_form($message, $label = "", $color = "#008EC2") {	
-	global $print_again, $wpdb;    ?>    
-    <?php   
-    if ($_SESSION['showpro']) { ?>
+	global $print_again, $wpdb;    	
+	
+    if (CheckPro()) { ?>
         <form action="<?php echo RINGCENTRAL_PRO_URL ?>" target="_blank" style="padding-left: 15%;">
             <?php 
             $btn_attributes = array( "style" => "background: red; border-color: #006799; color: #fff;" ); 

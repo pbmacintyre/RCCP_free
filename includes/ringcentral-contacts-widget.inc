@@ -69,8 +69,6 @@ class ringcentral_contacts_widget extends WP_Widget {
     function public_save($FormData) {
         global $wpdb;
         $contacts_widget_return_message = "";
-        error_reporting(E_ALL);
-        ini_set('display_errors', 0); 
         
         $full_name  = $FormData['full_name'] ;
         $email      = $FormData['email'] ;

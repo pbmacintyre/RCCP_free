@@ -72,9 +72,6 @@ class ringcentral_callme_widget extends WP_Widget {
         global $wpdb;
         $callme_widget_return_message = "";
         
-        error_reporting(E_ALL);
-        ini_set('display_errors', 0); 
-        
         $full_name      = $FormData['full_name'] ;
         $mobile         = $FormData['mobile'] ;
         $call_reason    = $FormData['call_reason'] ;

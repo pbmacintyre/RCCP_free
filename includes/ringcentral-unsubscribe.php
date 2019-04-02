@@ -4,7 +4,7 @@
  *
  */
 
-require( '../../../../wp-load.php' );
+// require( '../../../../wp-load.php' );
 global $wpdb;
 
 // locate the email address to be removed.

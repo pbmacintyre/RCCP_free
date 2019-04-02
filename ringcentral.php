@@ -1,5 +1,5 @@
 <?php 
-session_start();
+
 /*
 Plugin Name: RCCP Free
 Plugin URI:  https://ringcentral.com/
@@ -33,7 +33,7 @@ if(!defined('RINGCENTRAL_PLUGINDIR')){
 }
 if(!defined('RINGCENTRAL_PLUGINURL')){
     define('RINGCENTRAL_PLUGINURL', plugin_dir_url(__FILE__) ) ;
-    //  http://oldwp.paladin-bs.com/wp-content/plugins/RCCP_free/
+    //  http path returned
 }
 if(!defined('RINGCENTRAL_PLUGIN_INCLUDES')){
     define('RINGCENTRAL_PLUGIN_INCLUDES', plugin_dir_path(__FILE__) . "includes/" ) ;
@@ -53,16 +53,18 @@ if(!defined('RINGCENTRAL_LOGO')){
 /* ================================= */
 function ringcentral_js_add_script() {
     $js_path = RINGCENTRAL_PLUGINURL . 'js/ringcentral-scripts.js' ;
-    wp_enqueue_script('ringcentral-js', $js_path) ;
+    wp_enqueue_script('ringcentral-js', $js_path) ;    
 }
 add_action('init', 'ringcentral_js_add_script');
 
-function ringcentral_css_add_script() {    
-    $styles_path = RINGCENTRAL_PLUGINURL . 'css/ringcentral-custom.css' ;
-    wp_enqueue_style('ringcentral-css', $styles_path) ;
+function load_custom_admin_css() {
+    wp_register_style( 'ringcentral_custom_admin_css', 
+        RINGCENTRAL_PLUGINURL . 'css/ringcentral-custom.css', 
+        false, '1.0.0' );
+    wp_enqueue_style( 'ringcentral_custom_admin_css' );
 }
 
-add_action('init', 'ringcentral_css_add_script');
+add_action( 'admin_print_styles', 'load_custom_admin_css' );
 
 /* ========================================= */
 /* Make top level menu                       */
@@ -277,9 +279,7 @@ require_once("includes/ringcentral-functions.inc");
 /* ===================================== */
 /* Check if the pro version is available */
 /* ===================================== */
-showHide_GetPro();
-
-if ($_SESSION['showpro']) { 
+if (CheckPro()) { 
     /* ====================================================== */
     /* add link on plugin details line for buying Pro Version */
     /* ====================================================== */

@@ -24,7 +24,7 @@ $ringcentral_sql = "CREATE TABLE `ringcentral_control` (
   `mobile_updates` tinyint(4) NOT NULL,
   `token_prefix` varchar(10) NOT NULL,
   `oauth_client` varchar(75) NOT NULL,
-  `oauth_secret` varchar(75) NOT NULL,
+  `oauth_secret` varchar(75) NOT NULL,  
   PRIMARY KEY (`ringcentral_control_id`)
 ) ";
 dbDelta($ringcentral_sql);

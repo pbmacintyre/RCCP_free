@@ -8,11 +8,31 @@ Requires PHP:      5.6
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin allows for the use of the Ring Central communication tools platform based on the Ring Central PHP API.
+This plugin allows for the use of the Ring Central communication tools platform based on the 
+Ring Central PHP API.
+
+This plugin makes calls to: https://ringcentral.github.io/ringcentral-embeddable-voice/adapter.js
+
+The code base is here: https://github.com/ringcentral/ringcentral-embeddable
+The license is here: https://github.com/ringcentral/ringcentral-js-widgets/blob/master/LICENSE
+
+This is an out-of-the-box embeddable web phone app that help developers to integrate 
+RingCentral services to their own web applications. This is controlable in the settings page
+with a check box to turn it on or off.
 
 == Description ==
 
-This plugin allows for the use of the Ring Central communication tools platform based on the Ring Central PHP API.
+This plugin allows for the use of the Ring Central communication tools platform based on the 
+Ring Central PHP API.
+
+This plugin makes calls to: https://ringcentral.github.io/ringcentral-embeddable-voice/adapter.js
+
+The code base is here: https://github.com/ringcentral/ringcentral-embeddable
+The license is here: https://github.com/ringcentral/ringcentral-js-widgets/blob/master/LICENSE
+
+This is an out-of-the-box embeddable web phone app that help developers to integrate 
+RingCentral services to their own web applications. This is controlable in the settings page
+with a check box to turn it on or off.
 
 = Features =
 
