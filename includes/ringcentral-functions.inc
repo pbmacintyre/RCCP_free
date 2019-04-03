@@ -186,7 +186,7 @@ function build_help($field) {
     $result_rc_help = $wpdb->get_row( $wpdb->prepare("SELECT ringcentral_help_help AS help_text
             FROM `ringcentral_help` WHERE `ringcentral_help_field` = %s", $field) );
 
-    $out_string = "<img src='$image_source' title='$result_rc_help->help_text' />" ;
+    $out_string = "<img src='$image_source' title='" . esc_attr($result_rc_help->help_text) . "' />" ;
     return $out_string ;
 }
 

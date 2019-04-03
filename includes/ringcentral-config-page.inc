@@ -24,9 +24,9 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 			<td colspan="2" align="center">
 <?php	
 	if ($print_again == true) {
-		echo "<font color='$color'><strong>" . $message . "</strong></font>";
+		echo "<font color='$color'><strong>" . esc_html($message) . "</strong></font>";
 	} else {
-	    echo "<font color='$color'><strong>" . $message . "</strong></font>";
+	    echo "<font color='$color'><strong>" . esc_html($message) . "</strong></font>";	    
 	}
 	
 	$result_rc = $wpdb->get_row( $wpdb->prepare("SELECT * FROM `ringcentral_control` WHERE `ringcentral_control_id` = %d", 1) );
@@ -158,7 +158,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 		</td>
 		<td class="right_col"><input type="text" name="client_id" value="<?php 
 		  if ($print_again) {
-		      echo $_POST['client_id'];
+		      echo sanitize_text_field($_POST['client_id']);
           } else {             
               if ($result_rc->client_id) {
                   echo $result_rc->client_id ;
@@ -175,7 +175,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 		</td>
 		<td class="right_col"><input type="password" name="client_secret" id="myClientSecret" value="<?php 
 		  if ($print_again) {
-		      echo $_POST['client_secret'];
+		      echo sanitize_text_field($_POST['client_secret']);
           } else {             
               if ($result_rc->client_secret) {
                 echo $result_rc->client_secret ;
@@ -194,7 +194,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 		</td>
 		<td class="right_col"><input type="text" name="ringcentral_user_name" value="<?php 
 		  if ($print_again) {
-		      echo $_POST['ringcentral_user_name'];
+		      echo sanitize_text_field($_POST['ringcentral_user_name']);
           } else {             
               if ($result_rc->ringcentral_user_name) {
                 echo $result_rc->ringcentral_user_name ;
@@ -211,7 +211,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 		</td>
 		<td class="right_col"><input type="text" name="ringcentral_extension" value="<?php 
 		  if ($print_again) {
-		      echo $_POST['ringcentral_extension'];
+		      echo sanitize_text_field($_POST['ringcentral_extension']);
           } else {             
               if ($result_rc->ringcentral_extension) { echo $result_rc->ringcentral_extension ; } 
           }
@@ -224,7 +224,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 		</td>
 		<td class="right_col"><input type="password" name="ringcentral_password" id="myRCPassword" value="<?php 
 		  if ($print_again) {
-		      echo $_POST['ringcentral_password'];
+		      echo sanitize_text_field($_POST['ringcentral_password']);
           } else {             
               if ($result_rc->ringcentral_password) {
                 echo $result_rc->ringcentral_password ;
@@ -242,7 +242,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 		</td>
 		<td class="right_col"><input type="text" name="token_prefix" style="width: 25%;" value="<?php 
 		  if ($print_again) {
-		      echo $_POST['token_prefix'];
+		      echo sanitize_text_field($_POST['token_prefix']);
           } else {             
               if ($result_rc->token_prefix) {
                   echo $result_rc->token_prefix ;
@@ -279,11 +279,11 @@ Function check_form() {
 	}    
 	
 	$rc_handshake = array(
-	    "client_id"        => $_POST['client_id'],
-	    "client_secret"    => $_POST['client_secret'],
-	    "user_name"        => $_POST['ringcentral_user_name'] ,
-	    "extension"        => $_POST['ringcentral_extension'] ,
-	    "password"         => $_POST['ringcentral_password'] , 	    
+	    "client_id"        => sanitize_text_field($_POST['client_id']),
+	    "client_secret"    => sanitize_text_field($_POST['client_secret']),
+	    "user_name"        => sanitize_text_field($_POST['ringcentral_user_name']) ,
+	    "extension"        => sanitize_text_field($_POST['ringcentral_extension']) ,
+	    "password"         => sanitize_text_field($_POST['ringcentral_password']) , 	    
 	    "sandbox"          => $sandbox 	    
 	);
 	
@@ -355,7 +355,7 @@ Function check_form() {
             $mobile_updates = 0;
         } 
         
-        $token_prefix          = $_POST['token_prefix'] ;
+        $token_prefix = sanitize_text_field($_POST['token_prefix']) ;
         
 //         $oauth_client = $_POST['oauth_client'] ;
 //         $oauth_secret = $_POST['oauth_secret'] ;

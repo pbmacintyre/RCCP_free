@@ -15,9 +15,9 @@ Function show_form($message, $label = "", $color = "green") {
 			<td colspan="2" align="center">
 <?php	
 	if ($print_again == true) {
-		echo "<font color='$color'><strong>" . $message . "</strong></font>";
+	    echo "<font color='$color'><strong>" . esc_html($message) . "</strong></font>";
 	} else {
-	    echo "<font color='$color'><strong>" . $message . "</strong></font>";
+	    echo "<font color='$color'><strong>" . esc_html($message) . "</strong></font>";
 	}	
 	?></td>
 	</tr>	
@@ -27,7 +27,7 @@ Function show_form($message, $label = "", $color = "green") {
 			<p style='color: red; display: inline'>*</p>
 		</td>
 		<td class="right_col">
-			<input type="text" name="full_name" value="<?php if ($print_again) { echo $_POST['full_name']; } ?>">
+			<input type="text" name="full_name" value="<?php if ($print_again) { echo sanitize_text_field($_POST['full_name']) ; } ?>">
 		</td>
 	</tr>
 	<tr class="TableOverride">
@@ -35,7 +35,7 @@ Function show_form($message, $label = "", $color = "green") {
 			<p style='display: inline; <?php if ($label == "email") echo "color:red"; ?>' >email:</p>			
 		</td>
 		<td class="right_col">
-			<input type="text" name="email" value="<?php if ($print_again) { echo $_POST['email']; } ?>">
+			<input type="text" name="email" value="<?php if ($print_again) { echo sanitize_email($_POST['email']); } ?>">
 		</td>
 	</tr>
 		<tr class="TableOverride">
@@ -43,7 +43,7 @@ Function show_form($message, $label = "", $color = "green") {
 			<p style='display: inline; <?php if ($label == "mobile") echo "color:red"; ?>' >mobile:</p>			
 		</td>
 		<td class="right_col">
-			<input type="text" name="mobile" onkeypress="return isNumberKey(event)" value="<?php if ($print_again) { echo $_POST['mobile']; } ?>">
+			<input type="text" name="mobile" onkeypress="return isNumberKey(event)" value="<?php if ($print_again) { echo sanitize_text_field($_POST['mobile']) ; } ?>">
 		</td>
 	</tr>	
 	<tr class="TableOverride">
@@ -67,9 +67,9 @@ Function check_form() {
 	
 	global $print_again, $wpdb;
 	
-	$full_name  = $_POST['full_name'] ;
-	$email      = $_POST['email'] ;
-	$mobile     = $_POST['mobile'] ;	
+	$full_name  = sanitize_text_field($_POST['full_name']) ;
+	$email      = sanitize_email($_POST['email']) ;
+	$mobile     = sanitize_text_field($_POST['mobile']) ;	
 	
 	/* =================================== */
     /* data integrity checks, data massage */

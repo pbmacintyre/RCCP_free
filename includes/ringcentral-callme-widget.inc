@@ -58,9 +58,6 @@ class ringcentral_callme_widget extends WP_Widget {
         // check that the form was submitted
         if(isset($_POST['submit']) && $_POST['submit'] == "Call Me" ) {
             echo $this->public_save($_POST);
-//             echo "<pre>";
-//             var_dump($_POST);
-//             echo "</pre>";
         }
         
         echo $after_widget ;  
@@ -72,9 +69,9 @@ class ringcentral_callme_widget extends WP_Widget {
         global $wpdb;
         $callme_widget_return_message = "";
         
-        $full_name      = $FormData['full_name'] ;
-        $mobile         = $FormData['mobile'] ;
-        $call_reason    = $FormData['call_reason'] ;
+        $full_name      = sanitize_text_field($FormData['full_name']) ;
+        $mobile         = sanitize_text_field($FormData['mobile']) ;
+        $call_reason    = sanitize_text_field($FormData['call_reason']) ;
         $request_date   = date('Y-m-d', strtotime("now"));
               
         /* =================================== */

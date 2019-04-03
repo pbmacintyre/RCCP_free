@@ -41,7 +41,6 @@ class ringcentral_contacts_widget extends WP_Widget {
         $title = apply_filters ('widget_title', $instance['title']);        
         if (!empty($title) ) { echo $before_title . $title . $after_title; } ;
 
-//         echo $_POST["widget-ring_central_contacts_widget"][2]['full_name'] ;       
         ?>
         <form action="" method="post" >        		
         <p> Full Name: <input type="text" class="widefat" name="full_name" value="" /></p>
@@ -70,9 +69,9 @@ class ringcentral_contacts_widget extends WP_Widget {
         global $wpdb;
         $contacts_widget_return_message = "";
         
-        $full_name  = $FormData['full_name'] ;
-        $email      = $FormData['email'] ;
-        $mobile     = $FormData['mobile'] ;  
+        $full_name  = sanitize_text_field($FormData['full_name']) ;
+        $email      = sanitize_email($FormData['email']) ;
+        $mobile     = sanitize_text_field($FormData['mobile']) ;  
                         
         /* =================================== */
         /* data integrity checks, data massage */
