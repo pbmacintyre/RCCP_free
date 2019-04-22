@@ -185,14 +185,14 @@ Function show_form($message, $label = "", $color = "#008EC2") {
             </td>
 	</tr>	
 	<tr class="TableOverride">
-		<td class="left_col">
-		<p style='display: inline; <?php if ($label == "ringcentral_user_name") echo "color:red"; ?>' >Username:</p>
+		<td class="left_col" valign="top">
+		<p style='display: inline; <?php if ($label == "ringcentral_user_name") echo "color:red"; ?>' >RingCentral Number:</p>
 		<p style='color: red; display: inline'>*</p>
         
         <?php echo build_help("username") ; ?>
               
 		</td>
-		<td class="right_col"><input type="text" name="ringcentral_user_name" value="<?php 
+		<td class="right_col" valign="top"><input type="text" name="ringcentral_user_name" value="<?php 
 		  if ($print_again) {
 		      echo sanitize_text_field($_POST['ringcentral_user_name']);
           } else {             
@@ -202,7 +202,10 @@ Function show_form($message, $label = "", $color = "#008EC2") {
                 echo "&nbsp;" ;  
               }
           }
-            ?>"></td>
+            ?>"><br />
+			<div style="margin-top: 5px; width: 93%; border: 1px solid #004F6D; padding: 5px; background: #DAF0F8;">To prevent your number from being blocked, please use a Toll Free, SMS enabled phone number.  SMS charges may apply. [<a href="https://medium.com/ringcentral-developers/power-your-communications-with-toll-free-sms-cf8fdc77bc6e" target="_blank">Learn More</a>]</div>
+		
+		</td>
 	</tr>	
 	<tr class="TableOverride">
 		<td class="left_col">
