@@ -306,27 +306,27 @@ Function check_form() {
 	if ($rc_handshake["client_id"] == "") {
 	    $print_again = true;
 	    $label = "client_id";
-	    $message = "<b>Client ID cannot be blank.</b>";
+	    $message = "Client ID cannot be blank.";
 	}	
 	if ($rc_handshake["client_secret"] == "") {
 	    $print_again = true;
 	    $label = "client_secret";
-	    $message = "<b>Client Secret Key cannot be blank.</b>";
+	    $message = "Client Secret Key cannot be blank.";
 	}
 	if ($rc_handshake["user_name"] == "") {
 	    $print_again = true;
 	    $label = "ringcentral_user_name";
-	    $message = "<b>RingCentral User Name cannot be blank.</b>";
+	    $message = "RingCentral User Name cannot be blank.";
 	}
 	if ($rc_handshake["extension"] == "") {
 	    $print_again = true;
 	    $label = "ringcentral_extension";
-	    $message = "<b>RingCentral extension cannot be blank.</b>";
+	    $message = "RingCentral extension cannot be blank.";
 	}
 	if ($rc_handshake["password"] == "") {
 	    $print_again = true;
 	    $label = "ringcentral_password";
-	    $message = "<b>RingCentral password cannot be blank.</b>";
+	    $message = "RingCentral password cannot be blank.";
 	}	
 	/*
 	if ($_POST['oauth_client'] == "") {
