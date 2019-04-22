@@ -61,6 +61,39 @@ function ringcentral_validate_sdk($rc_handshake) {
     } catch (\RingCentral\SDK\Http\ApiException $e) {
         $result = false ;
     }
+	
+	// Set webhook if possible
+	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' && $result) {
+		
+		$webhook_url = add_query_arg(array('rcwebhook'=>'true'), get_site_url(null, '', 'https'));
+		
+		$webhookInstalled = 0;
+		$apiResponse = $sdk->platform()->get('/subscription');
+		foreach ($apiResponse->json()->records as $record) {
+			if ($record->deliveryMode->address == $webhook_url) {
+				$webhookInstalled = 1;
+			}
+		}
+		
+		if (!$webhookInstalled) {
+			$params = array(
+				'eventFilters' => array(
+					'/restapi/v1.0/account/~/extension/~/message-store/instant?type=SMS'
+					),
+				'deliveryMode' => array(
+					'transportType' => 'WebHook',
+					'address' => $webhook_url,
+					'expiresIn' => '630720000',
+				)
+			);
+			
+			try {
+				$sdk->platform()->post('/subscription', $params);
+			} catch (\RingCentral\SDK\Http\ApiException $e) {
+				// Unable to create webhook
+			}
+		}
+	}
     return $result ;
 }
 

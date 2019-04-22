@@ -260,10 +260,11 @@ function ringcentral_new_post_send_notifications( $post ) {
 /* Add filter hook for subscriptions */
 /* ============================================== */
 function ringcentral_vars($vars) {
-  $vars[] = 'rcsubscribe';
-  $vars[] = 'rcunsubscribe';
-  $vars[] = 'rcformat';
-  return $vars;
+	$vars[] = 'rcsubscribe';
+	$vars[] = 'rcunsubscribe';
+	$vars[] = 'rcformat';
+	$vars[] = 'rcwebhook';
+	return $vars;
 }
 
 add_filter('query_vars', 'ringcentral_vars');
@@ -281,6 +282,9 @@ function ringcentral_handle_vars() {
 	} elseif (!empty($unsubscribe)) {
 		$token_id = $unsubscribe;
 		require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-unsubscribe.inc");
+	} elseif (!empty(get_query_var('rcwebhook'))) {
+		// Check for opt out keywords
+		require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-webhook.inc");
 	}
 }
 

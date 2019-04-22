@@ -18,6 +18,13 @@ Function show_form($message, $label = "", $color = "#008EC2") {
             ?>        
         </form>
     <?php } ?>
+
+	<?php if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') { ?>
+	<div style="margin-top: 5px; width: 93%; max-width: 786px; border: 1px solid #900; padding: 10px; background: #ffe6e6; font-weight: bold; text-align: center;">
+		To comply with CTIA guidelines, please enable HTTPS and save your settings<br />(this will allow for your users to opt out with the STOP keyword).
+	</div>	
+	<?php } ?>
+
 	<form action="" method="post" >
 	<table class="TableOverride" >
 		<tr class="TableOverride">
