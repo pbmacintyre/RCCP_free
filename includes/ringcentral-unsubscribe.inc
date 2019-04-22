@@ -21,5 +21,5 @@ if ($method == 1) { // email unsubscription coming in
 $wpdb->query($sql);
 
 // then re-direct to public page confirming the email removal.
-wp_redirect($unsub_confirm_page);
+wp_redirect($unsub_confirm_page); exit();
 ?>
