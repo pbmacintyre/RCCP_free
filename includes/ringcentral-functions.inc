@@ -21,7 +21,7 @@ function ringcentral_sdk() {
     $client_secret         = $result_rc->client_secret ;
     $ringcentral_user_name = $result_rc->ringcentral_user_name ;
     $ringcentral_extension = $result_rc->ringcentral_extension ;
-    $ringcentral_password  = $result_rc->ringcentral_password ;
+    $ringcentral_password  = ringcentral_decrypt($result_rc->ringcentral_password);
     $ringcentral_sandbox   = $result_rc->ringcentral_sandbox ;
     
     if ($ringcentral_sandbox == 1) {
@@ -182,6 +182,34 @@ function ringcentral_ringout($to) {
         // $return_message = "There was an error adding you to our SMS list, please contact us or try again later";
     }
 }
+
+/* ============================== */
+/* Encrypt Password to Obfusicate */
+/* ============================== */
+function ringcentral_encrypt($plaintext) {
+	if (function_exists('openssl_cipher_iv_length')) { 
+		$key = $_SERVER['SERVER_NAME'].$_SERVER['SERVER_ADDR'].$_SERVER['SERVER_SOFTWARE'];
+		$cipher="AES-128-CBC";
+		$ivlen = openssl_cipher_iv_length($cipher);
+		$iv = substr($c, 0, $ivlen);
+		return base64_encode(openssl_encrypt($plaintext, $cipher, $key));
+	}
+	return $plaintext;
+}
+
+/* ============================== */
+/* Decrypt Password to Obfusicate */
+/* ============================== */
+function ringcentral_decrypt($ciphertext) {
+	if (function_exists('openssl_cipher_iv_length')) {
+		$key = $_SERVER['SERVER_NAME'].$_SERVER['SERVER_ADDR'].$_SERVER['SERVER_SOFTWARE'];
+		$cipher="AES-128-CBC";
+		return openssl_decrypt(base64_decode($ciphertext), $cipher, $key);
+	} else {
+		return $ciphertext;
+	}
+}
+
 
 /* ============================== */
 /* Build help icon and title text */

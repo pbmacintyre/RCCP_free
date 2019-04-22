@@ -228,9 +228,9 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 		<td class="right_col"><input type="password" name="ringcentral_password" id="myRCPassword" value="<?php 
 		  if ($print_again) {
 		      echo sanitize_text_field($_POST['ringcentral_password']);
-          } else {             
+          } else {        
               if ($result_rc->ringcentral_password) {
-                echo $result_rc->ringcentral_password ;
+                echo ringcentral_decrypt($result_rc->ringcentral_password) ;
               } 
           }
             ?>"></td>
@@ -358,6 +358,8 @@ Function check_form() {
             $mobile_updates = 0;
         } 
         
+		
+		$rc_handshake['password'] = ringcentral_encrypt($rc_handshake['password']);
         $token_prefix = sanitize_text_field($_POST['token_prefix']) ;
         
 //         $oauth_client = $_POST['oauth_client'] ;
