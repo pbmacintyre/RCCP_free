@@ -1,5 +1,5 @@
 <?php 
-
+define( 'WP_DEBUG', true );
 /*
 Plugin Name: RCCP Free
 Plugin URI:  https://ringcentral.com/
@@ -255,6 +255,38 @@ function ringcentral_new_post_send_notifications( $post ) {
         
     }
 }
+
+/* ============================================== */
+/* Add filter hook for subscriptions */
+/* ============================================== */
+function ringcentral_vars($vars) {
+  $vars[] = 'rcsubscribe';
+  $vars[] = 'rcunsubscribe';
+  $vars[] = 'rcformat';
+  return $vars;
+}
+
+add_filter('query_vars', 'ringcentral_vars');
+
+
+function ringcentral_handle_vars() {	
+	global $wpdb;
+	$subscribe = get_query_var('rcsubscribe');
+	$unsubscribe = get_query_var('rcunsubscribe');
+	$method = get_query_var('rcformat');
+	
+	if (!empty($subscribe)) {
+		$token_id = $subscribe;
+		require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-confirm-optin.inc");
+	} elseif (!empty($unsubscribe)) {
+		$token_id = $unsubscribe;
+		require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-unsubscribe.inc");
+	}
+}
+
+add_action('parse_query', 'ringcentral_handle_vars');
+
+
 /* ============================================= */
 /* Add registration hook for plugin installation */
 /* ============================================= */
