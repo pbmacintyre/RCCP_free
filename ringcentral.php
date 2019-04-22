@@ -76,7 +76,7 @@ function ringcentral_menu(){
         'manage_options',                           // Capability option
         'ringcentral_Admin',                        // Menu slug
         'ringcentral_config_page',                  // menu destination function call
-        RINGCENTRAL_PLUGINURL . 'images/ringcentral-icon.jpg', // menu icon path
+        RINGCENTRAL_PLUGINURL . 'images/ringcentral-icon.png', // menu icon path
 //         'dashicons-phone', // menu icon path from dashicons library
         25 );                                       // menu position level         
      
