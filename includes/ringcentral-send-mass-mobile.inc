@@ -4,6 +4,9 @@
  *
  */
 
+// Send messages even if user closes screen
+ignore_user_abort(true);
+
 $website_name = get_bloginfo('name') ;
 
 $mobile_list = $wpdb->get_results( $wpdb->prepare("SELECT `ringcentral_token`, `full_name`, `mobile`
@@ -13,9 +16,8 @@ $sdk = ringcentral_sdk() ;
 
 $from = ringcentral_get_from();
 
-foreach ( $mobile_list as $mobile_contact ) {
-    $unsub_url = RINGCENTRAL_PLUGINURL . "includes/ringcentral-unsubscribe.php?contact_id=" . $mobile_contact->ringcentral_token;
-    $unsub_url .= "&method=2" ;
+foreach ( $mobile_list as $mobile_contact ) {	
+	$unsub_url = add_query_arg(array('rcunsubscribe'=>$mobile_contact->ringcentral_token, 'rcformat'=>'2'), get_site_url());
     
     $message = "hi $mobile_contact->full_name : A new post has been added to:  $website_name \n\n";
     $message .= $post->post_title . ": " . $post_url . "\n\n";

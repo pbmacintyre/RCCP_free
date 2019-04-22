@@ -21,7 +21,7 @@ function ringcentral_sdk() {
     $client_secret         = $result_rc->client_secret ;
     $ringcentral_user_name = $result_rc->ringcentral_user_name ;
     $ringcentral_extension = $result_rc->ringcentral_extension ;
-    $ringcentral_password  = $result_rc->ringcentral_password ;
+    $ringcentral_password  = ringcentral_decrypt($result_rc->ringcentral_password);
     $ringcentral_sandbox   = $result_rc->ringcentral_sandbox ;
     
     if ($ringcentral_sandbox == 1) {
@@ -61,6 +61,39 @@ function ringcentral_validate_sdk($rc_handshake) {
     } catch (\RingCentral\SDK\Http\ApiException $e) {
         $result = false ;
     }
+	
+	// Set webhook if possible
+	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' && $result) {
+		
+		$webhook_url = add_query_arg(array('rcwebhook'=>'true'), get_site_url(null, '', 'https'));
+		
+		$webhookInstalled = 0;
+		$apiResponse = $sdk->platform()->get('/subscription');
+		foreach ($apiResponse->json()->records as $record) {
+			if ($record->deliveryMode->address == $webhook_url) {
+				$webhookInstalled = 1;
+			}
+		}
+		
+		if (!$webhookInstalled) {
+			$params = array(
+				'eventFilters' => array(
+					'/restapi/v1.0/account/~/extension/~/message-store/instant?type=SMS'
+					),
+				'deliveryMode' => array(
+					'transportType' => 'WebHook',
+					'address' => $webhook_url,
+					'expiresIn' => '630720000',
+				)
+			);
+			
+			try {
+				$sdk->platform()->post('/subscription', $params);
+			} catch (\RingCentral\SDK\Http\ApiException $e) {
+				// Unable to create webhook
+			}
+		}
+	}
     return $result ;
 }
 
@@ -68,8 +101,8 @@ function ringcentral_validate_sdk($rc_handshake) {
 /* send out welcome email function */
 /* =============================== */
 function send_welcome_email($email, $token, $full_name) {
-    $confirm_url = plugins_url('/', __FILE__) . "ringcentral-confirm-optin.php?contact_id=" . $token;
-    $confirm_url .= "&method=1" ;
+    $confirm_url = add_query_arg(array('rcsubscribe'=>$token, 'rcformat'=>'1'), get_site_url());
+	
     $subject = 'RingCentral - Please confirm your signup';
     
     $message = "Hi $full_name: <br/><br/>Thanks for joining our newsletter sign up process. ";
@@ -87,9 +120,8 @@ function send_welcome_email($email, $token, $full_name) {
 /* send out welcome SMS function */
 /* ============================= */
 function send_welcome_mobile($to, $token, $full_name) {
-    
-    $confirm_url = plugins_url('/', __FILE__) . "ringcentral-confirm-optin.php?contact_id=" . $token;
-    $confirm_url .= "&method=2" ;
+	$confirm_url = add_query_arg(array('rcsubscribe'=>$token, 'rcformat'=>'2'), get_site_url());
+	
     $message = "Hi $full_name: Thanks for joining our newsletter sign up process. [If this was not you please ignore this message]\n\n";
     $message .= "If you also signed up for email notifications you will receive a separate confirmation email in that regard.\n\n";
     $message .= "Please follow this link to confirm your SMS subscription to our mailing list: \n\n ";
@@ -175,6 +207,34 @@ function ringcentral_ringout($to) {
         // $return_message = "There was an error adding you to our SMS list, please contact us or try again later";
     }
 }
+
+/* ============================== */
+/* Encrypt Password to Obfusicate */
+/* ============================== */
+function ringcentral_encrypt($plaintext) {
+	if (function_exists('openssl_cipher_iv_length')) { 
+		$key = $_SERVER['SERVER_NAME'].$_SERVER['SERVER_ADDR'].$_SERVER['SERVER_SOFTWARE'];
+		$cipher="AES-128-CBC";
+		$ivlen = openssl_cipher_iv_length($cipher);
+		$iv = substr($c, 0, $ivlen);
+		return base64_encode(openssl_encrypt($plaintext, $cipher, $key));
+	}
+	return $plaintext;
+}
+
+/* ============================== */
+/* Decrypt Password to Obfusicate */
+/* ============================== */
+function ringcentral_decrypt($ciphertext) {
+	if (function_exists('openssl_cipher_iv_length')) {
+		$key = $_SERVER['SERVER_NAME'].$_SERVER['SERVER_ADDR'].$_SERVER['SERVER_SOFTWARE'];
+		$cipher="AES-128-CBC";
+		return openssl_decrypt(base64_decode($ciphertext), $cipher, $key);
+	} else {
+		return $ciphertext;
+	}
+}
+
 
 /* ============================== */
 /* Build help icon and title text */

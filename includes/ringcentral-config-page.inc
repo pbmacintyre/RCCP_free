@@ -18,6 +18,13 @@ Function show_form($message, $label = "", $color = "#008EC2") {
             ?>        
         </form>
     <?php } ?>
+
+	<?php if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') { ?>
+	<div style="margin-top: 5px; width: 93%; max-width: 786px; border: 1px solid #900; padding: 10px; background: #ffe6e6; font-weight: bold; text-align: center;">
+		To comply with CTIA guidelines, please enable HTTPS and save your settings<br />(this will allow for your users to opt out with the STOP keyword).
+	</div>	
+	<?php } ?>
+
 	<form action="" method="post" >
 	<table class="TableOverride" >
 		<tr class="TableOverride">
@@ -185,14 +192,14 @@ Function show_form($message, $label = "", $color = "#008EC2") {
             </td>
 	</tr>	
 	<tr class="TableOverride">
-		<td class="left_col">
-		<p style='display: inline; <?php if ($label == "ringcentral_user_name") echo "color:red"; ?>' >Username:</p>
+		<td class="left_col" valign="top">
+		<p style='display: inline; <?php if ($label == "ringcentral_user_name") echo "color:red"; ?>' >RingCentral Number:</p>
 		<p style='color: red; display: inline'>*</p>
         
         <?php echo build_help("username") ; ?>
               
 		</td>
-		<td class="right_col"><input type="text" name="ringcentral_user_name" value="<?php 
+		<td class="right_col" valign="top"><input type="text" name="ringcentral_user_name" value="<?php 
 		  if ($print_again) {
 		      echo sanitize_text_field($_POST['ringcentral_user_name']);
           } else {             
@@ -202,7 +209,10 @@ Function show_form($message, $label = "", $color = "#008EC2") {
                 echo "&nbsp;" ;  
               }
           }
-            ?>"></td>
+            ?>"><br />
+			<div style="margin-top: 5px; width: 93%; border: 1px solid #004F6D; padding: 5px; background: #DAF0F8;">To prevent your number from being blocked, please use a Toll Free, SMS enabled phone number.  SMS charges may apply. [<a href="https://medium.com/ringcentral-developers/power-your-communications-with-toll-free-sms-cf8fdc77bc6e" target="_blank">Learn More</a>]</div>
+		
+		</td>
 	</tr>	
 	<tr class="TableOverride">
 		<td class="left_col">
@@ -225,9 +235,9 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 		<td class="right_col"><input type="password" name="ringcentral_password" id="myRCPassword" value="<?php 
 		  if ($print_again) {
 		      echo sanitize_text_field($_POST['ringcentral_password']);
-          } else {             
+          } else {        
               if ($result_rc->ringcentral_password) {
-                echo $result_rc->ringcentral_password ;
+                echo ringcentral_decrypt($result_rc->ringcentral_password) ;
               } 
           }
             ?>"></td>
@@ -296,27 +306,27 @@ Function check_form() {
 	if ($rc_handshake["client_id"] == "") {
 	    $print_again = true;
 	    $label = "client_id";
-	    $message = "<b>Client ID cannot be blank.</b>";
+	    $message = "Client ID cannot be blank.";
 	}	
 	if ($rc_handshake["client_secret"] == "") {
 	    $print_again = true;
 	    $label = "client_secret";
-	    $message = "<b>Client Secret Key cannot be blank.</b>";
+	    $message = "Client Secret Key cannot be blank.";
 	}
 	if ($rc_handshake["user_name"] == "") {
 	    $print_again = true;
 	    $label = "ringcentral_user_name";
-	    $message = "<b>RingCentral User Name cannot be blank.</b>";
+	    $message = "RingCentral User Name cannot be blank.";
 	}
 	if ($rc_handshake["extension"] == "") {
 	    $print_again = true;
 	    $label = "ringcentral_extension";
-	    $message = "<b>RingCentral extension cannot be blank.</b>";
+	    $message = "RingCentral extension cannot be blank.";
 	}
 	if ($rc_handshake["password"] == "") {
 	    $print_again = true;
 	    $label = "ringcentral_password";
-	    $message = "<b>RingCentral password cannot be blank.</b>";
+	    $message = "RingCentral password cannot be blank.";
 	}	
 	/*
 	if ($_POST['oauth_client'] == "") {
@@ -355,6 +365,8 @@ Function check_form() {
             $mobile_updates = 0;
         } 
         
+		
+		$rc_handshake['password'] = ringcentral_encrypt($rc_handshake['password']);
         $token_prefix = sanitize_text_field($_POST['token_prefix']) ;
         
 //         $oauth_client = $_POST['oauth_client'] ;

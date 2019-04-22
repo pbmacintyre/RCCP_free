@@ -4,6 +4,9 @@
  *
  */
 
+// Send messages even if user closes screen
+ignore_user_abort(true);
+
 $website_name = get_bloginfo('name') ;
 
 $post_url = get_permalink( $post->ID );
@@ -28,8 +31,7 @@ $email_list = $wpdb->get_results( $wpdb->prepare("SELECT `ringcentral_token`, `f
 // should there be some kind of batch process to send out only 50 emails at a time or something so that 
 // we are not marked as spammers ?  If so, how would we do that?
 foreach ( $email_list as $email_contact ) {
-    $unsub_url = RINGCENTRAL_PLUGINURL . "includes/ringcentral-unsubscribe.php?contact_id=" . $email_contact->ringcentral_token;
-    $unsub_url .= "&method=1" ;
+	$unsub_url = add_query_arg(array('rcunsubscribe'=>$mobile_contact->ringcentral_token, 'rcformat'=>'1'), get_site_url());
     
     $subject = 'A new post has been added to: ' . $website_name;
     

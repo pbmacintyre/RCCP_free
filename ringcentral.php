@@ -76,7 +76,7 @@ function ringcentral_menu(){
         'manage_options',                           // Capability option
         'ringcentral_Admin',                        // Menu slug
         'ringcentral_config_page',                  // menu destination function call
-        RINGCENTRAL_PLUGINURL . 'images/ringcentral-icon.jpg', // menu icon path
+        RINGCENTRAL_PLUGINURL . 'images/ringcentral-icon.png', // menu icon path
 //         'dashicons-phone', // menu icon path from dashicons library
         25 );                                       // menu position level         
      
@@ -250,11 +250,47 @@ function ringcentral_new_post_send_notifications( $post ) {
     // this is also triggered on a page publishing, so ensure that the type is a Post and then carry on    
     if (get_post_type($post->ID) === 'post') {    
         // only send out correspondence if set in control / admin
-        if ($result_rc->email_updates) { require_once(RINGCENTRAL_PLUGINURL . "includes/ringcentral-send-mass-email.inc"); }    
-        if ($result_rc->mobile_updates) { require_once(RINGCENTRAL_PLUGINURL . "includes/ringcentral-send-mass-mobile.inc"); }
+        if ($result_rc->email_updates) { require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-email.inc"); }    
+        if ($result_rc->mobile_updates) { require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-mobile.inc"); }
         
     }
 }
+
+/* ============================================== */
+/* Add filter hook for subscriptions */
+/* ============================================== */
+function ringcentral_vars($vars) {
+	$vars[] = 'rcsubscribe';
+	$vars[] = 'rcunsubscribe';
+	$vars[] = 'rcformat';
+	$vars[] = 'rcwebhook';
+	return $vars;
+}
+
+add_filter('query_vars', 'ringcentral_vars');
+
+
+function ringcentral_handle_vars() {	
+	global $wpdb;
+	$subscribe = get_query_var('rcsubscribe');
+	$unsubscribe = get_query_var('rcunsubscribe');
+	$method = get_query_var('rcformat');
+	
+	if (!empty($subscribe)) {
+		$token_id = $subscribe;
+		require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-confirm-optin.inc");
+	} elseif (!empty($unsubscribe)) {
+		$token_id = $unsubscribe;
+		require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-unsubscribe.inc");
+	} elseif (!empty(get_query_var('rcwebhook'))) {
+		// Check for opt out keywords
+		require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-webhook.inc");
+	}
+}
+
+add_action('parse_query', 'ringcentral_handle_vars');
+
+
 /* ============================================= */
 /* Add registration hook for plugin installation */
 /* ============================================= */

@@ -4,29 +4,22 @@
  *
  */
 
-// require( '../../../../wp-load.php' );
-global $wpdb;
-
-// locate the email address to be removed.
-$contact_id = $_GET['contact_id'] ;
-$method     = $_GET['method'] ;
-
 if ($method == 1) { // email unsubscription coming in
     $unsub_confirm_page = site_url() . "/email-unsubscribe" ;    
     $sql = $wpdb->prepare("UPDATE `ringcentral_contacts` 
         SET `email` = %s, `email_confirmed` = %d,`email_optin_ip` = %s, `email_optin_date` = %s  
         WHERE `ringcentral_token` = %s",
-        "", 0, "", "", $contact_id) ;    
+        "", 0, "", "", $token_id) ;    
 } elseif ($method == 2) { // sms unsubscription coming in
     $unsub_confirm_page = site_url() . "/mobile-unsubscribe" ;
     $sql = $wpdb->prepare("UPDATE `ringcentral_contacts`
         SET `mobile` = %s, `mobile_confirmed` = %d,`mobile_optin_ip` = %s, `mobile_optin_date` = %s
         WHERE `ringcentral_token` = %s",
-        "", 0, "", "", $contact_id) ;
+        "", 0, "", "", $token_id) ;
 }
 
 $wpdb->query($sql);
 
 // then re-direct to public page confirming the email removal.
-header("Location: $unsub_confirm_page");
+wp_redirect($unsub_confirm_page);
 ?>

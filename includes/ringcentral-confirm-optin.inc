@@ -4,11 +4,7 @@
  *
  */
 
-global $wpdb;
-
 // locate the email address to be removed.
-$token_id = $_GET['contact_id'] ;
-$method     = $_GET['method'] ;
 $opt_in_date = date('Y-m-d'); // YYYY-MM-DD
 $opt_in_ip = $_SERVER['REMOTE_ADDR']?:($_SERVER['HTTP_X_FORWARDED_FOR']?:$_SERVER['HTTP_CLIENT_IP']);  ;
 
@@ -29,5 +25,5 @@ if ($method == 1) { // email confirmation coming in
 $wpdb->query($sql);
 
 // then re-direct to public page confirming the appropriate opt-in method.
-header("Location: $confirmation_page");
+wp_redirect($confirmation_page);
 ?>

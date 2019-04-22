@@ -166,7 +166,7 @@ Function check_form() {
                     $email, $mobile )
 	        );
 	        if ($result_rc->ringcentral_contacts_id) {
-	            $return_message = "<br/><center>Contact Information already on file...</center>" ;
+	            $return_message = "Contact Information already on file..." ;
 	        } else { // save new data
 	            $wpdb->query( $wpdb->prepare("INSERT INTO
                         `ringcentral_contacts` (`ringcentral_token`, `full_name`, `email`, `mobile`)
@@ -176,7 +176,7 @@ Function check_form() {
 	            // send both welcome output
 	            send_welcome_email($email, $uniq_token, $full_name );
 	            send_welcome_mobile($mobile, $uniq_token, $full_name) ;
-	            $return_message = "<br/><center>Contact Information saved...the new member will still have to opt-in</center>" ;
+	            $return_message = "Contact Information saved...the new member will still have to opt-in" ;
 	        }
 	    }  //end if already exists test
 	    $color = "red";	    
