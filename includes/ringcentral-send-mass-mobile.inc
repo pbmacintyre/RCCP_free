@@ -4,6 +4,9 @@
  *
  */
 
+// Send messages even if user closes screen
+ignore_user_abort(true);
+
 $website_name = get_bloginfo('name') ;
 
 $mobile_list = $wpdb->get_results( $wpdb->prepare("SELECT `ringcentral_token`, `full_name`, `mobile`

@@ -4,6 +4,9 @@
  *
  */
 
+// Send messages even if user closes screen
+ignore_user_abort(true);
+
 $website_name = get_bloginfo('name') ;
 
 $post_url = get_permalink( $post->ID );
