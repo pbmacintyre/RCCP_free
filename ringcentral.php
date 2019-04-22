@@ -250,8 +250,8 @@ function ringcentral_new_post_send_notifications( $post ) {
     // this is also triggered on a page publishing, so ensure that the type is a Post and then carry on    
     if (get_post_type($post->ID) === 'post') {    
         // only send out correspondence if set in control / admin
-        if ($result_rc->email_updates) { require_once(RINGCENTRAL_PLUGINURL . "includes/ringcentral-send-mass-email.inc"); }    
-        if ($result_rc->mobile_updates) { require_once(RINGCENTRAL_PLUGINURL . "includes/ringcentral-send-mass-mobile.inc"); }
+        if ($result_rc->email_updates) { require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-email.inc"); }    
+        if ($result_rc->mobile_updates) { require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-mobile.inc"); }
         
     }
 }
