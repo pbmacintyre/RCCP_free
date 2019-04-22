@@ -1,5 +1,5 @@
 <?php 
-define( 'WP_DEBUG', true );
+
 /*
 Plugin Name: RCCP Free
 Plugin URI:  https://ringcentral.com/

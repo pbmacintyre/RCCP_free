@@ -101,11 +101,7 @@ function ringcentral_validate_sdk($rc_handshake) {
 /* send out welcome email function */
 /* =============================== */
 function send_welcome_email($email, $token, $full_name) {
-    $confirm_url = plugins_url('/', __FILE__) . "ringcentral-confirm-optin.php?contact_id=" . $token;
-    $confirm_url .= "&method=1" ;
-	
-	$confirm_url = add_query_arg(array('rcsubscribe'=>$token, 'rcformat'=>'1'), '/');
-	
+    $confirm_url = add_query_arg(array('rcsubscribe'=>$token, 'rcformat'=>'1'), get_site_url());
 	
     $subject = 'RingCentral - Please confirm your signup';
     
@@ -124,10 +120,6 @@ function send_welcome_email($email, $token, $full_name) {
 /* send out welcome SMS function */
 /* ============================= */
 function send_welcome_mobile($to, $token, $full_name) {
-    
-    $confirm_url = plugins_url('/', __FILE__) . "ringcentral-confirm-optin.php?contact_id=" . $token;
-    $confirm_url .= "&method=2" ;
-	
 	$confirm_url = add_query_arg(array('rcsubscribe'=>$token, 'rcformat'=>'2'), get_site_url());
 	
     $message = "Hi $full_name: Thanks for joining our newsletter sign up process. [If this was not you please ignore this message]\n\n";
