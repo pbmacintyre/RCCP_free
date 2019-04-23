@@ -8,8 +8,8 @@ Requires PHP:      5.6
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin allows for the use of the Ring Central communication tools platform based on the 
-Ring Central PHP API.
+This plugin allows for the use of the RingCentral communication tools platform based on the 
+RingCentral PHP API.
 
 This plugin makes calls to: https://ringcentral.github.io/ringcentral-embeddable-voice/adapter.js
 
@@ -23,7 +23,7 @@ with a check box to turn it on or off.
 == Description ==
 
 This plugin allows for the use of the Ring Central communication tools platform based on the 
-Ring Central PHP API.
+RingCentral PHP API.
 
 This plugin makes calls to: https://ringcentral.github.io/ringcentral-embeddable-voice/adapter.js
 
