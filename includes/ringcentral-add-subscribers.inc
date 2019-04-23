@@ -115,7 +115,7 @@ Function check_form() {
 	    if ($mobile != "" ) $mobile = "+1" . $mobile ; 
 	    
 	    // generate unique token with control prefix.
-	    $uniq_token = unique_token() ;
+	    $uniq_token = ringcentral_unique_token() ;
 	    
 	    // if only given an email, check to see if we already have it
 	    if ($email != "" && $mobile == "") {
@@ -133,7 +133,7 @@ Function check_form() {
                         VALUES (%s, %s, %s )",
                         $uniq_token, $full_name, $email )
 	            );
-	            send_welcome_email($email, $uniq_token, $full_name );
+	            ringcentral_send_welcome_email($email, $uniq_token, $full_name );
 	            $return_message = "<br/><center>Contact Information saved...the new member will still have to opt-in</center>" ;
 	        }
 	    }
@@ -153,7 +153,7 @@ Function check_form() {
                         VALUES (%s, %s, %s )",
                         $uniq_token, $full_name, $mobile )
 	            );
-	            send_welcome_mobile($mobile, $uniq_token, $full_name) ;
+	            ringcentral_send_welcome_mobile($mobile, $uniq_token, $full_name) ;
 	            $return_message = "<br/><center>Contact Information saved...the new member will still have to opt-in</center>" ;
 	        }
 	    }
@@ -174,8 +174,8 @@ Function check_form() {
                         $uniq_token, $full_name, $email, $mobile )
 	            );
 	            // send both welcome output
-	            send_welcome_email($email, $uniq_token, $full_name );
-	            send_welcome_mobile($mobile, $uniq_token, $full_name) ;
+	            ringcentral_send_welcome_email($email, $uniq_token, $full_name );
+	            ringcentral_send_welcome_mobile($mobile, $uniq_token, $full_name) ;
 	            $return_message = "Contact Information saved...the new member will still have to opt-in" ;
 	        }
 	    }  //end if already exists test

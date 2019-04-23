@@ -10,7 +10,7 @@
 Function show_form($message, $label = "", $color = "#008EC2") {	
 	global $print_again, $wpdb;    	
 	
-    if (CheckPro()) { ?>
+	if (ringcentral_CheckPro()) { ?>
         <form action="<?php echo RINGCENTRAL_PRO_URL ?>" target="_blank" style="padding-left: 15%;">
             <?php 
             $btn_attributes = array( "style" => "background: red; border-color: #006799; color: #fff;" ); 
@@ -93,7 +93,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
         <td class="left_col">
             <p style='display: inline; <?php if ($label == "ringcentral_sandbox") echo "color:red"; ?>' >Use the RingCentral SANDBOX SDK?</p>  
             
-            <?php echo build_help("ringcentral_sandbox") ; ?>
+            <?php echo ringcentral_build_help("ringcentral_sandbox") ; ?>
                       
         </td>
         <td class="right_col"><input type="checkbox" name="ringcentral_sandbox" <?php 
@@ -196,7 +196,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 		<p style='display: inline; <?php if ($label == "ringcentral_user_name") echo "color:red"; ?>' >RingCentral Number:</p>
 		<p style='color: red; display: inline'>*</p>
         
-        <?php echo build_help("username") ; ?>
+        <?php echo ringcentral_build_help("username") ; ?>
               
 		</td>
 		<td class="right_col" valign="top"><input type="text" name="ringcentral_user_name" value="<?php 
@@ -247,7 +247,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 			<p style='display: inline; <?php if ($label == "token_prefix") echo "color:red"; ?>' >Token Prefix:</p>
             <!--  <p style='color: red; display: inline'>*</p>   -->
              
-            <?php echo build_help("token_prefix") ; ?>
+            <?php echo ringcentral_build_help("token_prefix") ; ?>
                          
 		</td>
 		<td class="right_col"><input type="text" name="token_prefix" style="width: 25%;" value="<?php 

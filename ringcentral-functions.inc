@@ -100,7 +100,7 @@ function ringcentral_validate_sdk($rc_handshake) {
 /* =============================== */
 /* send out welcome email function */
 /* =============================== */
-function ringcentral_send_welcome_email($email, $token, $full_name) {
+function send_welcome_email($email, $token, $full_name) {
     $confirm_url = add_query_arg(array('rcsubscribe'=>$token, 'rcformat'=>'1'), get_site_url());
 	
     $subject = 'RingCentral - Please confirm your signup';
@@ -119,7 +119,7 @@ function ringcentral_send_welcome_email($email, $token, $full_name) {
 /* ============================= */
 /* send out welcome SMS function */
 /* ============================= */
-function ringcentral_send_welcome_mobile($to, $token, $full_name) {
+function send_welcome_mobile($to, $token, $full_name) {
 	$confirm_url = add_query_arg(array('rcsubscribe'=>$token, 'rcformat'=>'2'), get_site_url());
 	
     $message = "Hi $full_name: Thanks for joining our newsletter sign up process. [If this was not you please ignore this message]\n\n";
@@ -127,7 +127,7 @@ function ringcentral_send_welcome_mobile($to, $token, $full_name) {
     $message .= "Please follow this link to confirm your SMS subscription to our mailing list: \n\n ";
     $message .= "$confirm_url ";
     
-    $from = ringcentral_get_from_phone();
+    $from = ringcentral_get_from();
     
     $sdk = ringcentral_sdk() ;
     try {
@@ -157,7 +157,7 @@ function ringcentral_send_welcome_mobile($to, $token, $full_name) {
 /* ============================================== */
 /* generate unique ID for new subscriber function */
 /* ============================================== */
-function ringcentral_unique_token() {
+function unique_token() {
     global $wpdb;
     $result_rc = $wpdb->get_row( $wpdb->prepare("SELECT `token_prefix`
             FROM `ringcentral_control` WHERE `ringcentral_control_id` = %d", 1 )
@@ -169,7 +169,7 @@ function ringcentral_unique_token() {
 /* get from phone number from control table */
 /* it is stored in the user_name field      */
 /* ======================================== */
-function ringcentral_get_from_phone() {
+function ringcentral_get_from() {
     global $wpdb;
     $result_rc = $wpdb->get_row( $wpdb->prepare("SELECT `ringcentral_user_name`
             FROM `ringcentral_control` WHERE `ringcentral_control_id` = %d", 1 )
@@ -181,7 +181,7 @@ function ringcentral_get_from_phone() {
 /* ========================= */
 function ringcentral_ringout($to) {
     $sdk = ringcentral_sdk() ;
-    $from = ringcentral_get_from_phone();
+    $from = ringcentral_get_from();
     try {
         $apiResponse = $sdk->platform()->post('/account/~/extension/~/ringout',
             array(
@@ -239,7 +239,7 @@ function ringcentral_decrypt($ciphertext) {
 /* ============================== */
 /* Build help icon and title text */
 /* ============================== */
-function ringcentral_build_help($field) {
+function build_help($field) {
     global $wpdb;
     $image_source = RINGCENTRAL_PLUGINURL . 'images/question_mark.png' ;
     
@@ -253,7 +253,7 @@ function ringcentral_build_help($field) {
 /* ============================= */
 /* show / hide "Get Pro" button  */
 /* ============================= */
-function ringcentral_CheckPro() {
+function CheckPro() {
     global $wpdb;
     
     $remote_string = "https://paladin-bs.com/check_rccp_free_pro.php";

@@ -16,4 +16,5 @@ $wpdb->query('DROP TABLE ringcentral_call_requests');
 $wpdb->query('DROP TABLE ringcentral_contacts');
 $wpdb->query('DROP TABLE ringcentral_control');
 $wpdb->query('DROP TABLE ringcentral_help');
+$wpdb->query('DROP TABLE ringcentral_queue');
 ?>

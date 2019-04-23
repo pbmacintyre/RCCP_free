@@ -4,7 +4,7 @@ Plugin Name: RCCP Free
 Plugin URI:  https://ringcentral.com/
 Description: RingCentral Communications Plugin - FREE
 Author:      Peter MacIntyre
-Version:     1.2.0
+Version:     1.3.0
 Author URI:  https://paladin-bs.com/peter-macintyre/
 Details URI: https://paladin-bs.com
 License:     GPL2
@@ -61,14 +61,14 @@ function ringcentral_js_add_script() {
 }
 add_action('init', 'ringcentral_js_add_script');
 
-function load_custom_admin_css() {
+function ringcentral_load_custom_admin_css() {
     wp_register_style( 'ringcentral_custom_admin_css', 
         RINGCENTRAL_PLUGINURL . 'css/ringcentral-custom.css', 
         false, '1.0.0' );
     wp_enqueue_style( 'ringcentral_custom_admin_css' );
 }
 
-add_action( 'admin_print_styles', 'load_custom_admin_css' );
+add_action( 'admin_print_styles', 'ringcentral_load_custom_admin_css' );
 
 /* ========================================= */
 /* Make top level menu                       */
@@ -249,9 +249,10 @@ function ringcentral_new_post_set_queue( $post) {
 	$post_url = get_permalink( $post->ID );
 	$title = $post->post_title;
 	
-	$wpdb->query($wpdb->prepare("INSERT INTO `ringcentral_queue` (`ringcentral_post_id`, `ringcentral_post_title`, `ringcentral_post_url`) VALUES (%d, %s, %s)", $post->ID, $title, $post_url));
+	$wpdb->query($wpdb->prepare("INSERT INTO `ringcentral_queue` 
+        (`ringcentral_post_id`, `ringcentral_post_title`, `ringcentral_post_url`) 
+        VALUES (%d, %s, %s)", $post->ID, $title, $post_url));
 }
-
 
 /* ============================================== */
 /* Setup CRON to do SMS messages and emails .     */
@@ -271,18 +272,17 @@ function ringcentral_cron_schedules($schedules){
 }
 add_filter('cron_schedules','ringcentral_cron_schedules');
 
-
 if ( ! wp_next_scheduled( 'ringcentral_send_notifications' ) ) {
   wp_schedule_event( time(), '5min', 'ringcentral_send_notifications' );
 }
 
 add_action( 'ringcentral_send_notifications', 'ringcentral_check_queue' );
 
-
 function ringcentral_check_queue() {
 	global $wpdb;
 	
-	$result_queue = $wpdb->get_row( $wpdb->prepare("SELECT `ringcentral_queue_id` AS `id`, `ringcentral_post_title` AS `title`, `ringcentral_post_url` AS `url`
+	$result_queue = $wpdb->get_row( $wpdb->prepare("SELECT `ringcentral_queue_id` AS `id`, 
+        `ringcentral_post_title` AS `title`, `ringcentral_post_url` AS `url`
         FROM `ringcentral_queue`
         WHERE `ringcentral_queue_complete` = %d LIMIT 1", 0)
     );
@@ -293,7 +293,8 @@ function ringcentral_check_queue() {
 		$postTitle = $result_queue->title;
 		$postUrl = $result_queue->url;
 		
-		$wpdb->query($wpdb->prepare("UPDATE `ringcentral_queue` SET `ringcentral_queue_complete` = 1 WHERE `ringcentral_queue_id` = %d", $queueId));
+		$wpdb->query($wpdb->prepare("UPDATE `ringcentral_queue` 
+            SET `ringcentral_queue_complete` = 1 WHERE `ringcentral_queue_id` = %d", $queueId));
 		
 		$result_rc = $wpdb->get_row( $wpdb->prepare("SELECT `email_updates`, `mobile_updates`
 			FROM `ringcentral_control`
@@ -355,19 +356,19 @@ function ringcentral_install() {
 /* ========================================= */
 /* Create default pages on plugin activation */
 /* ========================================= */
-function install_default_pages(){
+function ringcentral_install_default_pages(){
     require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-activation.inc");
 }
 
 register_activation_hook(__FILE__, 'ringcentral_install');
-register_activation_hook(__FILE__, 'install_default_pages');
+register_activation_hook(__FILE__, 'ringcentral_install_default_pages');
 
 
 
 /* ===================================== */
 /* Check if the pro version is available */
 /* ===================================== */
-if (CheckPro()) { 
+if (ringcentral_CheckPro()) { 
     /* ====================================================== */
     /* add link on plugin details line for buying Pro Version */
     /* ====================================================== */

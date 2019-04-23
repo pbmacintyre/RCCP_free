@@ -12,7 +12,6 @@ if (isset($_SERVER['HTTP_VALIDATION_TOKEN'])) {
 $incoming = file_get_contents("php://input");
 if (empty($incoming)) { http_response_code(200); echo json_encode(array('responseType'=>'error', 'responseDescription'=>'No data was provided')); exit(); }
 
-
 $incoming_data = json_decode($incoming);
 
 if (!$incoming_data) {
@@ -23,8 +22,7 @@ $in_from = $incoming_data->body->from->phoneNumber;
 $text = $incoming_data->body->subject;
 
 $sdk = ringcentral_sdk() ;
-$from = ringcentral_get_from();
-
+$from = ringcentral_get_from_phone();
 
 if (preg_match('/(STOP)|(END)|(CANCEL)|(UNSUBSCRIBE)|(QUIT)/i', $text)) {
 	$sql = $wpdb->prepare("UPDATE `ringcentral_contacts`
