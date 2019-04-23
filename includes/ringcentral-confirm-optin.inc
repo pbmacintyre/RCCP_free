@@ -25,5 +25,5 @@ if ($method == 1) { // email confirmation coming in
 $wpdb->query($sql);
 
 // then re-direct to public page confirming the appropriate opt-in method.
-wp_redirect($confirmation_page);
+wp_redirect($confirmation_page); exit();
 ?>
