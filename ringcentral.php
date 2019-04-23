@@ -1,5 +1,4 @@
 <?php 
-
 /*
 Plugin Name: RCCP Free
 Plugin URI:  https://ringcentral.com/
@@ -47,6 +46,11 @@ if(!defined('RINGCENTRAL_PRO_URL')){
 if(!defined('RINGCENTRAL_LOGO')){
     define ('RINGCENTRAL_LOGO', RINGCENTRAL_PLUGINURL . 'images/ringcentral-logo.png' ) ;
 }
+
+/* ====================================== */
+/* bring in generic ringcentral functions */
+/* ====================================== */
+require_once("includes/ringcentral-functions.inc");
 
 /* ================================= */
 /* set ring central supporting cast  */
@@ -234,27 +238,80 @@ require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-callme-widget.inc");
 /* ============================================== */
 /* Add action hook for correspondence on new post */
 /* ============================================== */
-add_action( 'pending_to_publish', 'ringcentral_new_post_send_notifications');
-add_action( 'draft_to_publish', 'ringcentral_new_post_send_notifications');
+add_action( 'pending_to_publish', 'ringcentral_new_post_set_queue');
+add_action( 'draft_to_publish', 'ringcentral_new_post_set_queue');
 
-function ringcentral_new_post_send_notifications( $post ) {
-    global $wpdb ;    
-    
-    $result_rc = $wpdb->get_row( $wpdb->prepare("SELECT `email_updates`, `mobile_updates`
-        FROM `ringcentral_control`
-        WHERE `ringcentral_control_id` = %d", 1)
-    );    
-    // If this is a revision, don't send the correspondence.
-    if (wp_is_post_revision( $post->ID )) return;
-
-    // this is also triggered on a page publishing, so ensure that the type is a Post and then carry on    
-    if (get_post_type($post->ID) === 'post') {    
-        // only send out correspondence if set in control / admin
-        if ($result_rc->email_updates) { require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-email.inc"); }    
-        if ($result_rc->mobile_updates) { require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-mobile.inc"); }
-        
-    }
+function ringcentral_new_post_set_queue( $post) {
+	global $wpdb ;
+	
+	if (wp_is_post_revision( $post->ID ) || get_post_type($post->ID) !== 'post') { return; }
+	
+	$post_url = get_permalink( $post->ID );
+	$title = $post->post_title;
+	
+	$wpdb->query($wpdb->prepare("INSERT INTO `ringcentral_queue` (`ringcentral_post_id`, `ringcentral_post_title`, `ringcentral_post_url`) VALUES (%d, %s, %s)", $post->ID, $title, $post_url));
 }
+
+
+/* ============================================== */
+/* Setup CRON to do SMS messages and emails .     */
+/* ============================================== */
+function ringcentral_cron_schedules($schedules){
+    if(!isset($schedules["5min"])){
+        $schedules["5min"] = array(
+            'interval' => 5*60,
+            'display' => __('Once every 5 minutes'));
+    }
+    if(!isset($schedules["30min"])){
+        $schedules["30min"] = array(
+            'interval' => 30*60,
+            'display' => __('Once every 30 minutes'));
+    }
+    return $schedules;
+}
+add_filter('cron_schedules','ringcentral_cron_schedules');
+
+
+if ( ! wp_next_scheduled( 'ringcentral_send_notifications' ) ) {
+  wp_schedule_event( time(), '5min', 'ringcentral_send_notifications' );
+}
+
+add_action( 'ringcentral_send_notifications', 'ringcentral_check_queue' );
+
+
+function ringcentral_check_queue() {
+	global $wpdb;
+
+	$wpdb->query("UPDATE `ringcentral_queue` SET `ringcentral_queue_complete` = 0");
+	
+	$result_queue = $wpdb->get_row( $wpdb->prepare("SELECT `ringcentral_queue_id` AS `id`, `ringcentral_post_title` AS `title`, `ringcentral_post_url` AS `url`
+        FROM `ringcentral_queue`
+        WHERE `ringcentral_queue_complete` = %d LIMIT 1", 0)
+    );
+	
+	if($result_queue) {
+		$siteName = get_bloginfo('name');
+		$queueId = $result_queue->id;
+		$postTitle = $result_queue->title;
+		$postUrl = $result_queue->url;
+		
+		$wpdb->query($wpdb->prepare("UPDATE `ringcentral_queue` SET `ringcentral_queue_complete` = 1 WHERE `ringcentral_queue_id` = %d", $queueId));
+		
+		$result_rc = $wpdb->get_row( $wpdb->prepare("SELECT `email_updates`, `mobile_updates`
+			FROM `ringcentral_control`
+			WHERE `ringcentral_control_id` = %d", 1)
+		);
+		
+		if ($result_rc->email_updates) { 
+			require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-email.inc"); 
+		}
+		
+        if ($result_rc->mobile_updates) {
+			require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-send-mass-mobile.inc"); 
+		}
+	}
+}
+
 
 /* ============================================== */
 /* Add filter hook for subscriptions */
@@ -307,10 +364,7 @@ function install_default_pages(){
 register_activation_hook(__FILE__, 'ringcentral_install');
 register_activation_hook(__FILE__, 'install_default_pages');
 
-/* ====================================== */
-/* bring in generic ringcentral functions */
-/* ====================================== */
-require_once("includes/ringcentral-functions.inc");
+
 
 /* ===================================== */
 /* Check if the pro version is available */

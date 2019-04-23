@@ -80,6 +80,17 @@ $ringcentral_sql = "CREATE TABLE `ringcentral_help` (
 `ringcentral_help_help` TEXT NULL , 
 PRIMARY KEY (`ringcentral_help_id`))";
 dbDelta($ringcentral_sql);
+/* ==============================*/
+/* Create ringcentral_queue table */
+/* ==============================*/
+$ringcentral_sql = "CREATE TABLE `ringcentral_queue` ( 
+`ringcentral_queue_id` INT NOT NULL AUTO_INCREMENT ,
+`ringcentral_post_id` INT NOT NULL ,
+`ringcentral_post_title` VARCHAR(255) NOT NULL , 
+`ringcentral_post_url` VARCHAR(255) NOT NULL ,
+`ringcentral_queue_complete` TINYINT(1) NOT NULL DEFAULT 0, 
+PRIMARY KEY (`ringcentral_queue_id`))";
+dbDelta($ringcentral_sql);
 /* ====================================== */
 /* seed table with control row and basic  */
 /* data if there is no existing row       */
