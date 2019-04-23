@@ -281,8 +281,6 @@ add_action( 'ringcentral_send_notifications', 'ringcentral_check_queue' );
 
 function ringcentral_check_queue() {
 	global $wpdb;
-
-	$wpdb->query("UPDATE `ringcentral_queue` SET `ringcentral_queue_complete` = 0");
 	
 	$result_queue = $wpdb->get_row( $wpdb->prepare("SELECT `ringcentral_queue_id` AS `id`, `ringcentral_post_title` AS `title`, `ringcentral_post_url` AS `url`
         FROM `ringcentral_queue`
