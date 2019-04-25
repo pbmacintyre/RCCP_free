@@ -4,7 +4,7 @@
  *
  */
 
-// locate the email address to be removed.
+// locate the email address to be updated.
 $opt_in_date = date('Y-m-d'); // YYYY-MM-DD
 $opt_in_ip = $_SERVER['REMOTE_ADDR']?:($_SERVER['HTTP_X_FORWARDED_FOR']?:$_SERVER['HTTP_CLIENT_IP']);  ;
 

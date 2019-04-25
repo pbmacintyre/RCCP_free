@@ -311,10 +311,9 @@ function ringcentral_check_queue() {
 	}
 }
 
-
-/* ============================================== */
+/* ================================= */
 /* Add filter hook for subscriptions */
-/* ============================================== */
+/* ================================= */
 function ringcentral_vars($vars) {
 	$vars[] = 'rcsubscribe';
 	$vars[] = 'rcunsubscribe';
@@ -324,7 +323,6 @@ function ringcentral_vars($vars) {
 }
 
 add_filter('query_vars', 'ringcentral_vars');
-
 
 function ringcentral_handle_vars() {	
 	global $wpdb;
@@ -346,7 +344,6 @@ function ringcentral_handle_vars() {
 
 add_action('parse_query', 'ringcentral_handle_vars');
 
-
 /* ============================================= */
 /* Add registration hook for plugin installation */
 /* ============================================= */
@@ -362,8 +359,6 @@ function ringcentral_install_default_pages(){
 
 register_activation_hook(__FILE__, 'ringcentral_install');
 register_activation_hook(__FILE__, 'ringcentral_install_default_pages');
-
-
 
 /* ===================================== */
 /* Check if the pro version is available */
