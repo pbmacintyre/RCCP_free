@@ -91,6 +91,13 @@ class ringcentral_callme_widget extends WP_Widget {
     	$mobile = preg_replace("/[^0-9]/", '', $mobile);
     	// remove leading digit if it is a 1
     	if (substr($mobile, 0, 1) == "1") { $mobile = substr($mobile, 1) ; }
+    	
+    	// remove 900 toll free numbers
+    	if (substr($mobile, 0, 3) == "900") { 
+    	    $print_again = true;
+    	    $label = "mobile";
+    	    $callme_widget_return_message = "Toll free 900 Mobile numbers are not allowed";
+    	}
     	    
         if ($mobile != "" && strlen($mobile) !== 10) {
             $print_again = true;
