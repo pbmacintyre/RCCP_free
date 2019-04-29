@@ -260,6 +260,48 @@ Function show_form($message, $label = "", $color = "#008EC2") {
           }
             ?>"></td>
 	</tr>	
+    <?php /* ============================================== */ ?>
+    <tr>
+        <td colspan=2>
+            <hr>
+        </td>
+    </tr>  
+    <tr class="TableOverride">
+        <td class="left_col">
+            <p style='display: inline; <?php if ($label == "recaptcha_site") echo "color:red"; ?>' >Google ReCaptcha Site Key:</p>
+            <p style='color: red; display: inline'>*</p>
+        </td>
+        <td class="right_col"><input type="password" name="recaptcha_site" id="myGRCSite" value="<?php 
+          if ($print_again) {
+              echo sanitize_text_field($_POST['recaptcha_site']);
+          } else {             
+              if ($result_rc->grc_site_key) {
+                echo $result_rc->grc_site_key ;
+              } 
+          }
+            ?>" > 
+            </td>
+    </tr>       
+    <tr class="TableOverride">
+        <td class="left_col">
+            <p style='display: inline; <?php if ($label == "recaptcha_secret") echo "color:red"; ?>' >Google ReCaptcha Secret Key:</p>
+            <p style='color: red; display: inline'>*</p>
+        </td>
+        <td class="right_col"><input type="password" name="recaptcha_secret" id="myGRCSecret" value="<?php 
+          if ($print_again) {
+              echo sanitize_text_field($_POST['recaptcha_secret']);
+          } else {             
+              if ($result_rc->grc_secret_key) {
+                echo $result_rc->grc_secret_key ;
+              } 
+          }
+            ?>" ><br />
+            <div style="margin-top: 5px; width: 93%; border: 1px solid #004F6D; padding: 5px; background: #DAF0F8;">
+            You need to register your site with Google ReCaptcha. Be sure to set up using the ReCaptcha Version 2 checkbox option. 
+            To do that go here: [<a href="https://developers.google.com/recaptcha/" 
+            target="_blank">Google ReCaptcha Version 2 Checkbox</a>]</div> 
+            </td>
+    </tr>     
 	<tr class="TableOverride">
 		<td colspan="2" align="center">			
 			<br/>
@@ -296,6 +338,8 @@ Function check_form() {
 	    "password"         => sanitize_text_field($_POST['ringcentral_password']) , 	    
 	    "sandbox"          => $sandbox 	    
 	);
+	$GRCSite   = $_POST["recaptcha_site"] ;
+	$GRCSecret = $_POST["recaptcha_secret"] ;
 	
 // 	/* data integrity checks */	
 	if (ringcentral_validate_sdk($rc_handshake) == false) {
@@ -328,6 +372,16 @@ Function check_form() {
 	    $label = "ringcentral_password";
 	    $message = "RingCentral password cannot be blank.";
 	}	
+	if ($GRCSite == "") {
+	    $print_again = true;
+	    $label = "recaptcha_site";
+	    $message = "Google ReCaptcha Site Key cannot be blank.";
+	}	
+	if ($GRCSecret == "") {
+	    $print_again = true;
+	    $label = "recaptcha_secret";
+	    $message = "Google ReCaptcha Secret Key cannot be blank.";
+	}
 	/*
 	if ($_POST['oauth_client'] == "") {
 	    $print_again = true;
@@ -374,9 +428,11 @@ Function check_form() {
 
         $config_sql = $wpdb->prepare("UPDATE `ringcentral_control` SET
             `embedded_phone` = %d, `email_updates` = %d, `mobile_updates` = %d, `client_id` = %s, `client_secret` = %s,
-            `ringcentral_user_name` = %s, `ringcentral_extension` = %d, `ringcentral_password` = %s, `ringcentral_sandbox` = %d, `token_prefix` = %s
+            `ringcentral_user_name` = %s, `ringcentral_extension` = %d, `ringcentral_password` = %s, `ringcentral_sandbox` = %d,
+            `grc_site_key` = %s, `grc_secret_key` = %s, `token_prefix` = %s
             WHERE `ringcentral_control_id` = %d", $embedded_phone, $email_updates, $mobile_updates, $rc_handshake['client_id'], $rc_handshake['client_secret'], 
-            $rc_handshake['user_name'], $rc_handshake['extension'], $rc_handshake['password'], $sandbox, $token_prefix, 1) ;
+            $rc_handshake['user_name'], $rc_handshake['extension'], $rc_handshake['password'], $sandbox, 
+            $GRCSite, $GRCSecret, $token_prefix, 1) ;
                 
         $wpdb->query( $config_sql ); 
         

@@ -40,7 +40,7 @@ class ringcentral_callme_widget extends WP_Widget {
         echo $before_widget;
         $title = apply_filters ('widget_title', $instance['title']);        
         if (!empty($title) ) { echo $before_title . $title . $after_title; } ;
-
+        ringcentral_build_recaptcha_top();
         ?>
         <form action="" method="post" >        		
         <p>Full Name: <input type="text" class="widefat" name="full_name" value="" /></p>           
@@ -49,7 +49,9 @@ class ringcentral_callme_widget extends WP_Widget {
 
         <p>Call Reason: <textarea name="call_reason" value="" maxlength="500" ></textarea>
                          
-		<br/><br/>
+		<br/>
+        <?php ringcentral_build_recaptcha_main(); ?>
+        <br/>
 		<center>
 		<input type="submit" name="submit" value="Call Me" style="background: #008ec2; border-color: #006799; color: #fff;">
 		</center>
@@ -91,14 +93,12 @@ class ringcentral_callme_widget extends WP_Widget {
     	$mobile = preg_replace("/[^0-9]/", '', $mobile);
     	// remove leading digit if it is a 1
     	if (substr($mobile, 0, 1) == "1") { $mobile = substr($mobile, 1) ; }
-    	
     	// remove 900 toll free numbers
     	if (substr($mobile, 0, 3) == "900") { 
     	    $print_again = true;
     	    $label = "mobile";
     	    $callme_widget_return_message = "Toll free 900 Mobile numbers are not allowed";
-    	}
-    	    
+    	}    	    
         if ($mobile != "" && strlen($mobile) !== 10) {
             $print_again = true;
             $label = "mobile";
@@ -109,7 +109,11 @@ class ringcentral_callme_widget extends WP_Widget {
             $label = "full_name";
             $callme_widget_return_message = "Full Name cannot be blank."; 
         }    
-        
+        if (ringcentral_verify_recaptcha($_POST['g-recaptcha-response']) == false) {
+            $print_again = true;
+            $label = "recaptcha";
+            $contacts_widget_return_message = "Invalid ReCaptcha answer, are you a bot?";
+        } 
         /* future consideration - only allow one call request per day? */
         
         /* ========================== */

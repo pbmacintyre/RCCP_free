@@ -23,6 +23,8 @@ $ringcentral_sql = "CREATE TABLE `ringcentral_control` (
   `email_updates` tinyint(4) NOT NULL,
   `mobile_updates` tinyint(4) NOT NULL,
   `token_prefix` varchar(10) NOT NULL,
+  `grc_site_key` VARCHAR(75) NOT NULL,
+  `grc_secret_key` VARCHAR(75) NOT NULL,
   `oauth_client` varchar(75) NOT NULL,
   `oauth_secret` varchar(75) NOT NULL,  
   PRIMARY KEY (`ringcentral_control_id`)

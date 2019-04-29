@@ -40,7 +40,7 @@ class ringcentral_contacts_widget extends WP_Widget {
         echo $before_widget;
         $title = apply_filters ('widget_title', $instance['title']);        
         if (!empty($title) ) { echo $before_title . $title . $after_title; } ;
-
+        ringcentral_build_recaptcha_top();
         ?>
         <form action="" method="post" >        		
         <p> Full Name: <input type="text" class="widefat" name="full_name" value="" /></p>
@@ -49,7 +49,9 @@ class ringcentral_contacts_widget extends WP_Widget {
             
         <p> Mobile #: <input type="text" class="widefat" name="mobile" value="" onkeypress="return isNumberKey(event)" /></p>
                          
-		<br/><br/>
+		<br/>
+        <?php ringcentral_build_recaptcha_main(); ?>
+        <br/>
 		<center>
 		<input type="submit" name="submit" value="Join List" style="background: #008ec2; border-color: #006799; color: #fff;">
 		</center>
@@ -76,7 +78,7 @@ class ringcentral_contacts_widget extends WP_Widget {
         /* =================================== */
         /* data integrity checks, data massage */
         /* =================================== */        
-    	// only take the mobile numbers
+    	// only take the numbers, no hyphens or brackets
     	$mobile = preg_replace("/[^0-9]/", '', $mobile);
     	// remove leading digit if it is a 1
     	if (substr($mobile, 0, 1) == "1") { $mobile = substr($mobile, 1) ; }
@@ -100,6 +102,11 @@ class ringcentral_contacts_widget extends WP_Widget {
             $print_again = true;
             $label = "full_name";
             $contacts_widget_return_message = "Full Name cannot be blank."; 
+        }   
+        if (ringcentral_verify_recaptcha($_POST['g-recaptcha-response']) == false) {
+            $print_again = true;
+            $label = "recaptcha";
+            $contacts_widget_return_message = "Invalid ReCaptcha answer, are you a bot?";
         }    
         /* ========================= */
         /* end data integrity checks */

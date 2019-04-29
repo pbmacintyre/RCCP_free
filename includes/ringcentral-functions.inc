@@ -240,7 +240,57 @@ function ringcentral_build_help($field) {
     $out_string = "<img src='$image_source' title='" . esc_attr($result_rc_help->help_text) . "' />" ;
     return $out_string ;
 }
-
+/* =================== */
+/* Build ReCaptcha top */
+/* =================== */
+function ringcentral_build_recaptcha_top() {    
+    echo "<script src='https://www.google.com/recaptcha/api.js' async defer></script>";
+    return ;
+}
+/* ==================== */
+/* Build ReCaptcha main */
+/* ==================== */
+function ringcentral_build_recaptcha_main() {    
+    global $wpdb;
+    $result_rc = $wpdb->get_row( $wpdb->prepare("SELECT `grc_site_key`
+            FROM `ringcentral_control` WHERE `ringcentral_control_id` = %d", 1 )
+        );    
+    $site_key = $result_rc->grc_site_key ;
+    echo "<tr class='TableOverride'><td>&nbsp;</td><td ><br/>";
+    echo "<div class='g-recaptcha' data-sitekey='" . $site_key . "'></div>";   
+    echo "</td></tr>";
+    return ;
+}
+/* ========================= */
+/* Verify ReCaptcha response */
+/* ========================= */
+function ringcentral_verify_recaptcha($action) {
+    global $wpdb;
+    $result_rc = $wpdb->get_row( $wpdb->prepare("SELECT `grc_secret_key`
+            FROM `ringcentral_control` WHERE `ringcentral_control_id` = %d", 1 )
+        );
+    $secret_key = $result_rc->grc_secret_key ;        
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $data = array(
+        'secret' => $secret_key,
+        'response' => $action
+    );
+    $options = array(
+        'http' => array (
+            'method' => 'POST',
+            'content' => http_build_query($data)
+        )
+    );
+    $context  = stream_context_create($options);
+    $verify = file_get_contents($url, false, $context);
+    $captcha_success = json_decode($verify);
+    if ($captcha_success->success == false) {
+        $response = false;
+    } else if ($captcha_success->success==true) {
+        $response = true;
+    }
+    return $response ;
+}
 /* ============================= */
 /* show / hide "Get Pro" button  */
 /* ============================= */
