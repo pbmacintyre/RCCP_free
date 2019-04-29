@@ -5,7 +5,7 @@
  */
 class ringcentral_contacts_widget extends WP_Widget {
     // instantiate the class
-    function ringcentral_contacts_widget() {
+    function __construct() {
         $widget_ops = array(
           'classname' => 'ring_central_contacts_widget_class',
           'description' => 'When signing up for new Post Notifications also offer SMS messages.'

@@ -61,6 +61,12 @@ function ringcentral_js_add_script() {
 }
 add_action('init', 'ringcentral_js_add_script');
 
+function ringcentral_js_add_admin_script() {
+    $js_path = RINGCENTRAL_PLUGINURL . 'js/ringcentral-admin-scripts.js' ;
+    wp_enqueue_script('ringcentral-admin-js', $js_path) ;
+}
+add_action('admin_enqueue_scripts', 'ringcentral_js_add_admin_script');
+
 function ringcentral_load_custom_admin_css() {
     wp_register_style( 'ringcentral_custom_admin_css', 
         RINGCENTRAL_PLUGINURL . 'css/ringcentral-custom.css', 

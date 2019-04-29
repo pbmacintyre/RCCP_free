@@ -5,7 +5,7 @@
  */
 class ringcentral_callme_widget extends WP_Widget {
     // instantiate the class
-    function ringcentral_callme_widget() {
+    function __construct() {
         $widget_ops = array(
             'classname' => 'ring_central_callme_widget_class',
             'description' => 'Use this widget to allow someone to request a call from your website admin'
