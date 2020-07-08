@@ -1,6 +1,6 @@
 <?php 
 /*
- * Copyright (C) 2019 Paladin Business Solutions
+ * Copyright (C) 2019-2020 Paladin Business Solutions
  *
  */
 
@@ -20,6 +20,9 @@ $ringcentral_sql = "CREATE TABLE `ringcentral_control` (
   `ringcentral_extension` tinyint(4) NOT NULL,
   `ringcentral_password` varchar(50) NOT NULL,
   `ringcentral_sandbox` TINYINT NOT NULL,
+  `embed_width` SMALLINT(4) NOT NULL,
+  `embed_height` SMALLINT(4) NOT NULL,		
+  `enable_glip` tinyint(4) NOT NULL,
   `email_updates` tinyint(4) NOT NULL,
   `mobile_updates` tinyint(4) NOT NULL,
   `token_prefix` varchar(10) NOT NULL,
@@ -38,9 +41,9 @@ $row_exists = $wpdb->get_var($wpdb->prepare("SELECT `ringcentral_control_id` FRO
         WHERE `ringcentral_control_id` = %d", 1) );
 if (!$row_exists) {
     $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_control`
-      (`ringcentral_control_id`,`embedded_phone`,`ringcentral_sandbox`,`email_updates`,`mobile_updates`)
+      (`ringcentral_control_id`,`embedded_phone`,`ringcentral_sandbox`,`embed_width`,`embed_height`,`email_updates`,`mobile_updates`)
       VALUES (%d, %d, %d, %d, %d )",
-        1, 1, 0, 1, 0 )
+        1, 0, 1, 300, 500, 1, 0 )
         );
 }
 /* ================================= */
@@ -99,6 +102,7 @@ dbDelta($ringcentral_sql);
 /* ====================================== */
 $row_exists = $wpdb->get_var($wpdb->prepare("SELECT `ringcentral_help_id` FROM `ringcentral_help`
         WHERE `ringcentral_help_id` = %d", 1) );
+// should check all rows individually.
 if (!$row_exists) {
     $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_help`
       (`ringcentral_help_id`, `ringcentral_help_field`, `ringcentral_help_help`)
@@ -112,6 +116,23 @@ if (!$row_exists) {
       (`ringcentral_help_id`, `ringcentral_help_field`, `ringcentral_help_help`)
       VALUES (%d, %s, %s)",
         3, "ringcentral_sandbox", "Turn this checkbox ON if you want to use the Ring Central SANDBOX SDK, leave it off for Production use." ) );
+    $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_help`
+      (`ringcentral_help_id`, `ringcentral_help_field`, `ringcentral_help_help`)
+      VALUES (%d, %s, %s)",
+    	4, "embedded_phone", "Use this checkbox to turn on the Embedded Phone tool, note it cannot be on at the same time as embedded Team Messaging" ) );
+    $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_help`
+      (`ringcentral_help_id`, `ringcentral_help_field`, `ringcentral_help_help`)
+      VALUES (%d, %s, %s)",
+    	5, "enable_glip", "Use this checkbox to turn on embedded Team Messaging, note it cannot be on at the same time as the Embedded Phone" ) );
+    $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_help`
+      (`ringcentral_help_id`, `ringcentral_help_field`, `ringcentral_help_help`)
+      VALUES (%d, %s, %s)",
+    	6, "embed_width", "Set the width in pixels for embedded Team Messaging; this should be a number greater than 300" ) );
+    $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_help`
+      (`ringcentral_help_id`, `ringcentral_help_field`, `ringcentral_help_help`)
+      VALUES (%d, %s, %s)",
+   		7, "embed_height", "Set the height in pixels for embedded Team Messaging; this should be a number greater than 500" ) );
+    
 }
 /* ======================================= */
 /* build email confirmation page if needed */

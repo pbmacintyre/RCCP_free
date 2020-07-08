@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2019 Paladin Business Solutions
+ * Copyright (C) 2019-2020 Paladin Business Solutions
  *
  */
 
@@ -48,7 +48,7 @@ function ringcentral_validate_sdk($rc_handshake) {
     
     if ($rc_handshake['sandbox'] == 1) {
         // Use sandbox Client        
-        $sdk = new RingCentral\SDK\SDK($rc_handshake['client_id'], $rc_handshake['client_secret'], RingCentral\SDK\SDK::SERVER_SANDBOX);
+        $sdk = new RingCentral\SDK\SDK($rc_handshake['client_id'], $rc_handshake['client_secret'], RingCentral\SDK\SDK::SERVER_SANDBOX);        
     } else {
         // Use Production Client
         $sdk = new RingCentral\SDK\SDK($rc_handshake['client_id'], $rc_handshake['client_secret'], RingCentral\SDK\SDK::SERVER_PRODUCTION);        
@@ -57,11 +57,13 @@ function ringcentral_validate_sdk($rc_handshake) {
     // attempt to Login via API
     try {
         $sdk->platform()->login($rc_handshake['user_name'], $rc_handshake['extension'], $rc_handshake['password']);
-        $result = true ;
+        $result = true ;        
     } catch (\RingCentral\SDK\Http\ApiException $e) {
         $result = false ;
+        //echo "<br/><br/>Error trace: <br/>" . $e ;
     }
 	
+	/*
 	// Set webhook if possible
 	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' && $result) {
 		
@@ -91,9 +93,10 @@ function ringcentral_validate_sdk($rc_handshake) {
 				$sdk->platform()->post('/subscription', $params);
 			} catch (\RingCentral\SDK\Http\ApiException $e) {
 				// Unable to create webhook
+				echo "<br/><br/>Error trace, Webhook: <br/>" . $e ;
 			}
 		}
-	}
+	} */
     return $result ;
 }
 
@@ -162,8 +165,8 @@ function ringcentral_unique_token() {
     $result_rc = $wpdb->get_row( $wpdb->prepare("SELECT `token_prefix`
             FROM `ringcentral_control` WHERE `ringcentral_control_id` = %d", 1 )
         );
-    $prefix = $result_rc->token_prefix ;
-    return uniqid($prefix, true) ;
+    // $prefix = $result_rc->token_prefix ;
+    return uniqid($result_rc->token_prefix, true) ;
 }
 /* ======================================== */
 /* get from phone number from control table */
@@ -302,5 +305,54 @@ function ringcentral_CheckPro() {
     
     return $showHide = wp_remote_retrieve_body( wp_remote_get($remote_string, $args) ) ;
 }
+/* ============================================= */
+/* Get list of Team Messaging Group Chats (Teams) */
+/* ============================================= */
+function list_tm_teams($rcsdk) {
+	
+	$platform = $rcsdk->platform();
+	
+	$queryParams = array(
+			'type' => array('Team'),
+			//'type' => array( 'Everyone', 'Group', 'Personal', 'Direct', 'Team' ),
+			//'recordCount' => 2,			
+	);
+	
+	try {
+		$response = $platform->get("/restapi/v1.0/glip/chats", $queryParams);		
+	} catch (\RingCentral\SDK\Http\ApiException $e) {
+		$response = false ;
+ 		// $response = $e ;
+	}
+	
+	return $response ;	
+}
+/* ============================================== */
+/* Post text to Team Messaging Group Chats (Teams) */
+/* ============================================== */
+function post_tm_chat($rcsdk, $chatId, $team_chat) {
+	
+	$platform = $rcsdk->platform();
+	
+	$body = array(
+			'text' => $team_chat,
+			// use options below if you are ever going to send attachments to the chat as well.
+			// 'attachments' => array(
+			//	array(
+			//		'id' => '<ENTER VALUE>',
+			//		'type' => '<ENTER VALUE>'
+			//	)
+	);
+	
+	try {
+		$platform->post("/restapi/v1.0/glip/chats/{$chatId}/posts", $body);
+		$result = true ;
+	} catch (\RingCentral\SDK\Http\ApiException $e) {
+		// echo "<br/><br/>Failed to add text to selected Team chat -><br/>" . $e ;
+		$result = false ;
+	}
+	return $result;	 
+}
+
 
 ?>

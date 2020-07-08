@@ -2,8 +2,8 @@
 Contributors:      pbmacintyre
 Tags:              Ring Central Communications API tools
 Requires at least: 4.1
-Tested up to:      5.1
-Stable tag:        1.3.2
+Tested up to:      5.4.2
+Stable tag:        1.4.0
 Requires PHP:      5.6
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -16,7 +16,7 @@ The code base is here: https://github.com/ringcentral/ringcentral-embeddable
 
 The license is here: https://github.com/ringcentral/ringcentral-js-widgets/blob/master/LICENSE
 
-This is an out-of-the-box embeddable web phone app that help developers to integrate RingCentral services to their own web applications. This is controlable in the settings page with a check box to turn it on or off.
+This is an out-of-the-box embeddable web phone app that helps developers to integrate RingCentral services into their own web applications. This is controlable in the settings page with a check box to turn it on or off. There is also a Team Messaging component added in version 1.4
 
 == Description ==
 
@@ -28,13 +28,13 @@ The code base is here: https://github.com/ringcentral/ringcentral-embeddable
 
 The license is here: https://github.com/ringcentral/ringcentral-js-widgets/blob/master/LICENSE
 
-This is an out-of-the-box embeddable web phone app that help developers to integrate RingCentral services to their own web applications. This is controlable in the settings page with a check box to turn it on or off.
+This is an out-of-the-box embeddable web phone app that helps developers to integrate RingCentral services into their own web applications. This is controlable in the settings page with a check box to turn it on or off. There is also a Team Messaging component added in version 1.4
 
 = Features =
 
 <ul>
 <li>RingCentral Embedded Phone app - 
-RingCentral's embedded phone app can be turned on or off and call can be made from within the WordPress Admin area.
+RingCentral's embedded phone app can be turned on or off and calls can be made from within the WordPress Admin area.
 </li>
 
 <li>Call Me Request widget - 
@@ -61,12 +61,24 @@ Feature to display your existing list of Newsletter announcement subscribers. Yo
 Feature to display your existing list of Call Me requests. You can delete individually or collectively. List shows caller name, phone number to call back, reason for the call.
 </li>
 
+<li>Chat / Manage Team Messaging -  
+Feature to display and control the Team Messaging (GLIP) feature of RingCentrals API. You can embed the chat portion into the admin area or simply connect to the Team Messaging area and post to it via the API. 
+</li>
+
 <li>Default pages are created for you to customize - 
 Default WordPress pages are created upon activation of the plugin. Very basic confirmation of email and SMS opt-in pages are provided. Basic pages for confirming opt-out request are also provided. Page names are: 'eMail Confirmation', 'eMail Unsubscribe', 'Mobile Confirmation', and 'Mobile Unsubscribe' NOTE: permainks must be set to "Post name" 
 </li>
 
 <li>New Database tables are created - 
 New tables are created in the database and seeded with basic starting data in order for the plugin to operate correctly. All table names are prefixed by 'ringcentral_'. The plugin drops these tables if the plugin is ever deleted, so be sure to save any data if you ever plan on deleting the plugin.
+</li>
+
+<li>Team Messaging (Glip) embedded - 
+Team Messaging (Glip) has been added as an embeddable option with width and height controls .
+</li>
+
+<li>Team Messaging (Glip) Messages - 
+Team Messaging (Glip) messages can be posted directly to the stand-alone Messaging interface through the API .
 </li>
 
 </ul>
@@ -106,9 +118,13 @@ use of this plug in, but currently you do need to have a developer account.
 5. Manager Subscribers list display
 6. Newsletter Signup Widget on Public side of website
 7. Call Me Request Widget on Public side of website
+8. Embedded Team Messaging interface
+9. Sending a team message to the Team Messaging web interface 
 == Changelog ==
 = 1.0 =
 * Initial version
+= 1.4 =
+* Added in the Team Messaging (Glip) API / embedded tool
 == Upgrade Notice ==
 == Contribute ==
 If you find this useful and if you want to contribute, here are some ways:

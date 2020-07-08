@@ -4,7 +4,7 @@ Plugin Name: RCCP Free
 Plugin URI:  https://ringcentral.com/
 Description: RingCentral Communications Plugin - FREE
 Author:      Peter MacIntyre
-Version:     1.3.2
+Version:     1.4.0
 Author URI:  https://paladin-bs.com/peter-macintyre/
 Details URI: https://paladin-bs.com
 License:     GPL2
@@ -21,6 +21,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
  
 See License URI for full details.
+
+Copyright (C) 2019-2020 Paladin Business Solutions
 */
 
 /* ============================== */
@@ -88,15 +90,15 @@ function ringcentral_menu(){
         'ringcentral_config_page',                  // menu destination function call
         RINGCENTRAL_PLUGINURL . 'images/ringcentral-icon.png', // menu icon path
 //         'dashicons-phone', // menu icon path from dashicons library
-        25 );                                       // menu position level         
-     
+        25                                       // menu position level 
+	);     
     add_submenu_page(
         'ringcentral_Admin',                   // parent slug
         'RCCP Free: RingCentral Configurations', // page title
         'Settings',                            // menu title - can be different than parent
         'manage_options',                      // options
-        'ringcentral_Admin' );                 // menu slug to match top level (go to the same link)
-    
+        'ringcentral_Admin'                    // menu slug to match top level (go to the same link)
+    );
     add_submenu_page(
         'ringcentral_Admin',                // parent menu slug
         'RCCP Free: RingCentral Add a New Subscriber', // page title
@@ -104,7 +106,7 @@ function ringcentral_menu(){
         'manage_options',                   // capability
         'ringcentral_add_subs',             // menu slug
         'ringcentral_add_subscribers'       // callable function
-        );    
+    );    
     add_submenu_page(
         'ringcentral_Admin',                   // parent menu slug
         'RCCP Free: RingCentral Manage Subscribers', // page title
@@ -112,7 +114,7 @@ function ringcentral_menu(){
         'manage_options',                      // capability
         'ringcentral_list_subs',               // menu slug
         'ringCentral_list_subscribers'         // callable function
-        );    
+    );    
     add_submenu_page(
         'ringcentral_Admin',                // parent menu slug
         'RCCP Free: RingCentral CallMe Requests', // page title
@@ -120,8 +122,23 @@ function ringcentral_menu(){
         'manage_options',                   // capability
         'ringcentral_list_callme',          // menu slug
         'ringCentral_list_callme_requests'  // callable function
-        );    
-
+    );    
+    add_submenu_page(
+	    'ringcentral_Admin',                // parent menu slug
+	    'RCCP Free: Send a Team Message', // page title
+	    'Send a Team Message',                  // menu title
+	    'manage_options',                   // capability
+	    'ringcentral_glip',             // menu slug
+	    'ringcentral_glip_send'       // callable function
+	);
+    add_submenu_page(
+    'ringcentral_Admin',                // parent menu slug
+    'RCCP Free: Team Messaging Embed ', // page title
+    'Embedded Team Messaging',                  // menu title
+    'manage_options',                   // capability
+    'ringcentral_glip_embed',             // menu slug
+    'ringcentral_glip_embed'       // callable function
+    );
 }  
 
 /* ========================================= */
@@ -135,7 +152,7 @@ add_action('admin_menu', 'ringcentral_menu');
 function ringcentral_config_page() {
     // check user capabilities
     if (!current_user_can('manage_options')) { return; }
-?>    
+	?>    
     <div class="wrap">
         <img id='page_title_img' title="RingCentral Plugin" src="<?= RINGCENTRAL_LOGO ;?>">
         <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
@@ -145,7 +162,6 @@ function ringcentral_config_page() {
     </div>
     <?php
 }
-
 // function for adding new subscribers page
 function ringcentral_add_subscribers() {
     // check user capabilities
@@ -160,13 +176,11 @@ function ringcentral_add_subscribers() {
     </div>
     <?php
 }
-
 // function for editing existing subscribers page
 function ringCentral_list_subscribers() {
     // check user capabilities
     if (!current_user_can('manage_options')) { return; }
-    ?>
-        
+    ?>        
     <div class="wrap">
         <img id='page_title_img' title="RingCentral Plugin" src="<?= RINGCENTRAL_LOGO ;?>">
         <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
@@ -180,13 +194,42 @@ function ringCentral_list_subscribers() {
 function ringCentral_list_callme_requests() {
     // check user capabilities
     if (!current_user_can('manage_options')) { return; }
-    ?>
-        
+    ?>        
     <div class="wrap">
         <img id='page_title_img' title="RingCentral Plugin" src="<?= RINGCENTRAL_LOGO ;?>">
         <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
         
        <?php require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-list-callme.inc"); ?>
+       
+    </div>
+    <?php
+}
+
+// function for calling GLIP send
+function ringcentral_glip_send() {
+	// check user capabilities
+	if (!current_user_can('manage_options')) { return; }
+	?>        
+    <div class="wrap">
+        <img id='page_title_img' title="RingCentral Plugin" src="<?= RINGCENTRAL_LOGO ;?>">
+        <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
+        
+       <?php require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-glip.inc"); ?>
+       
+    </div>
+    <?php
+}
+
+// function for calling GLIP Embed settings page
+function ringcentral_glip_embed() {
+	// check user capabilities
+	if (!current_user_can('manage_options')) { return; }
+	?>
+    <div class="wrap">
+        <img id='page_title_img' title="RingCentral Plugin" src="<?= RINGCENTRAL_LOGO ;?>">
+        <h1 id='page_title'><?= esc_html(get_admin_page_title()); ?></h1>
+        
+       <?php require_once(RINGCENTRAL_PLUGINDIR . "includes/ringcentral-glip-embed.inc"); ?>
        
     </div>
     <?php
@@ -279,7 +322,7 @@ function ringcentral_cron_schedules($schedules){
 add_filter('cron_schedules','ringcentral_cron_schedules');
 
 if ( ! wp_next_scheduled( 'ringcentral_send_notifications' ) ) {
-  wp_schedule_event( time(), '5min', 'ringcentral_send_notifications' );
+  wp_schedule_event( time(), '5min', 'ringcentral_send_notifications' ); 
 }
 
 add_action( 'ringcentral_send_notifications', 'ringcentral_check_queue' );

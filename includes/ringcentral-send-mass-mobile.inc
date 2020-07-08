@@ -1,13 +1,14 @@
 <?php
 /**
- * Copyright (C) 2019 Paladin Business Solutions
+ * Copyright (C) 2019-2020 Paladin Business Solutions
  *
  */
 
 $sdk = ringcentral_sdk() ;
 $from = ringcentral_get_from_phone();
 
-$mobile_list = $wpdb->get_results( $wpdb->prepare("SELECT `ringcentral_token`, `full_name`, `mobile` FROM `ringcentral_contacts` WHERE `mobile` <> %s AND `mobile_confirmed` = %d", "", 1 ) ); 
+$mobile_list = $wpdb->get_results( $wpdb->prepare("SELECT `ringcentral_token`, `full_name`, `mobile` 
+    FROM `ringcentral_contacts` WHERE `mobile` <> %s AND `mobile_confirmed` = %d", "", 1 ) ); 
 
 foreach ( $mobile_list as $mobile_contact ) {	
 	$unsub_url = add_query_arg(array('rcunsubscribe'=>$mobile_contact->ringcentral_token, 'rcformat'=>'2'), get_site_url());

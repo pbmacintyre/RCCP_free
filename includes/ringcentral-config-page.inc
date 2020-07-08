@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2019 Paladin Business Solutions
+ * Copyright (C) 2019-2020 Paladin Business Solutions
  *
  */
 
@@ -8,6 +8,7 @@
 /* show_form */
 /* ========= */
 Function show_form($message, $label = "", $color = "#008EC2") {	
+	
 	global $print_again, $wpdb;    	
 	
 	if (ringcentral_CheckPro()) { ?>
@@ -42,7 +43,10 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 	</tr>	
 	<tr class="TableOverride">
 		<td class="left_col">
-			<p style='display: inline; <?php if ($label == "embedded_phone") echo "color:red"; ?>' >Use Embedded Phone?</p>			
+			<p style='display: inline; <?php if ($label == "embedded_phone") echo "color:red"; ?>' >Use Embedded Phone?</p>
+			
+			<?php echo ringcentral_build_help("embedded_phone") ; ?>
+						
 		</td>
 		<td class="right_col"><input type="checkbox" name="embedded_phone" <?php 
 		if ($print_again) { 
@@ -260,12 +264,77 @@ Function show_form($message, $label = "", $color = "#008EC2") {
           }
             ?>"></td>
 	</tr>	
-    <?php /* ============================================== */ ?>
+    <?php /* =========== Team Messaging section ================= */ ?>
     <tr>
         <td colspan=2>
             <hr>
         </td>
     </tr>  
+    
+    <tr class="TableOverride">
+		<td class="left_col">
+			<p style='display: inline; <?php if ($label == "enable_glip") echo "color:red"; ?>' >Activate Team Messaging?</p>
+			
+			<?php echo ringcentral_build_help("enable_glip") ; ?>
+						
+		</td>
+		<td class="right_col"><input type="checkbox" name="enable_glip" <?php 
+		if ($print_again) { 
+		    if ($_POST['enable_glip'] == "on") {
+		      echo 'CHECKED';
+		    } 
+          } else {             
+              if ($result_rc->enable_glip == 1) {
+                  echo 'CHECKED' ;
+                }
+          }
+            ?>></td>
+	</tr>   
+    
+    <tr class="TableOverride">
+		<td class="left_col">
+			<p style='display: inline; <?php if ($label == "embed_width") echo "color:red"; ?>' >Team Messaging Width:</p>
+            <!--  <p style='color: red; display: inline'>*</p>   -->
+             
+            <?php echo ringcentral_build_help("embed_width") ; ?>
+                         
+		</td>
+		<td class="right_col"><input type="text" name="embed_width" style="width: 25%;" value="<?php 
+		  if ($print_again) {
+		      echo sanitize_text_field($_POST['embed_width']);
+          } else {             
+              if ($result_rc->embed_width) {
+                  echo $result_rc->embed_width ;
+              } 
+          }
+            ?>"> px</td>
+	</tr>	
+    <tr class="TableOverride">
+		<td class="left_col">
+			<p style='display: inline; <?php if ($label == "embed_height") echo "color:red"; ?>' >Team Messaging Height:</p>
+            <!--  <p style='color: red; display: inline'>*</p>   -->
+             
+            <?php echo ringcentral_build_help("embed_height") ; ?>
+                         
+		</td>
+		<td class="right_col"><input type="text" name="embed_height" style="width: 25%;" value="<?php 
+		  if ($print_again) {
+		      echo sanitize_text_field($_POST['embed_height']);
+          } else {             
+              if ($result_rc->embed_height) {
+                  echo $result_rc->embed_height ;
+              } 
+          }
+            ?>"> px</td>
+	</tr>	
+	
+	<?php /* ========= Google ReCaptcha Section =================== */ ?>
+    <tr>
+        <td colspan=2>
+            <hr>
+        </td>
+    </tr>      
+    
     <tr class="TableOverride">
         <td class="left_col">
             <p style='display: inline; <?php if ($label == "recaptcha_site") echo "color:red"; ?>' >Google ReCaptcha Site Key:</p>
@@ -312,6 +381,7 @@ Function show_form($message, $label = "", $color = "#008EC2") {
 		</td>
 	</tr>
 	</table>
+	</form>
 <?php
 }
 /* ========== */
@@ -386,17 +456,33 @@ Function check_form() {
 	if ($_POST['oauth_client'] == "") {
 	    $print_again = true;
 	    $label = "oauth_client";
-	    $message = "<b>OAuth Client Key cannot be blank.</b>";
+	    $message = "OAuth Client Key cannot be blank.";
 	}
 	
 	if ($_POST['oauth_secret'] == "") {
 	    $print_again = true;
 	    $label = "oauth_secret";
-	    $message = "<b>OAuth Secret Key cannot be blank.</b>";
+	    $message = "OAuth Secret Key cannot be blank.>";
 	} */
+	
+	if ($_POST['embedded_phone'] == "on" && $_POST['enable_glip'] == "on" ) {
+		$print_again = true;
+		$label = "embedded_phone";
+		$message = "Both embedded phone and team messaging cannot be activated at the same time.";
+	}
+	if ($_POST['embed_width'] <= 0 && $_POST['enable_glip'] == "on") {
+		$print_again = true;
+		$label = "embed_width";
+		$message = "If you are activating embeded team messaging then the width setting cannot be blank and must be greater than 0";
+	}
+	if ($_POST['embed_height'] <= 0 && $_POST['enable_glip'] == "on") {
+		$print_again = true;
+		$label = "embed_height";
+		$message = "If you are activating embeded team messaging then the height setting cannot be blank and must be greater than 0";
+	}
 
 	// end data integrity checking
-	
+
 	if ($print_again == true) {
 		$color = "red" ;
 	    show_form($message, $label, $color);
@@ -411,17 +497,22 @@ Function check_form() {
             $email_updates = 1;
         } else {
             $email_updates = 0;
-        }
-        
+        }        
         if ($_POST['mobile_updates'] == "on") {
             $mobile_updates = 1;
         } else {
             $mobile_updates = 0;
         } 
-        
+        if ($_POST['enable_glip'] == "on") {
+        	$enable_glip = 1;
+        } else {
+        	$enable_glip = 0;
+        }        
 		
 		$rc_handshake['password'] = ringcentral_encrypt($rc_handshake['password']);
         $token_prefix = sanitize_text_field($_POST['token_prefix']) ;
+        $embed_width = sanitize_text_field($_POST['embed_width']) ;
+        $embed_height = sanitize_text_field($_POST['embed_height']) ;
         
 //         $oauth_client = $_POST['oauth_client'] ;
 //         $oauth_secret = $_POST['oauth_secret'] ;
@@ -429,16 +520,18 @@ Function check_form() {
         $config_sql = $wpdb->prepare("UPDATE `ringcentral_control` SET
             `embedded_phone` = %d, `email_updates` = %d, `mobile_updates` = %d, `client_id` = %s, `client_secret` = %s,
             `ringcentral_user_name` = %s, `ringcentral_extension` = %d, `ringcentral_password` = %s, `ringcentral_sandbox` = %d,
+        	`enable_glip` = %d, `embed_width` = %d,`embed_height` = %d,	
             `grc_site_key` = %s, `grc_secret_key` = %s, `token_prefix` = %s
             WHERE `ringcentral_control_id` = %d", $embedded_phone, $email_updates, $mobile_updates, $rc_handshake['client_id'], $rc_handshake['client_secret'], 
-            $rc_handshake['user_name'], $rc_handshake['extension'], $rc_handshake['password'], $sandbox, 
+            $rc_handshake['user_name'], $rc_handshake['extension'], $rc_handshake['password'], $sandbox,
+        	$enable_glip, $embed_width, $embed_height,	 
             $GRCSite, $GRCSecret, $token_prefix, 1) ;
                 
         $wpdb->query( $config_sql ); 
         
 	    $color = "#53DF00";
 	    $message = "Configuration Changes have been saved";	   
-	    show_form($message, $label, $color) ;
+	    show_form($message, $label, $color) ;	    
 	}
 }
 

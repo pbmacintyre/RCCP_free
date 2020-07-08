@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2019 Paladin Business Solutions
+ * Copyright (C) 2019-2020 Paladin Business Solutions
  *
  */
 class ringcentral_contacts_widget extends WP_Widget {
@@ -130,7 +130,8 @@ class ringcentral_contacts_widget extends WP_Widget {
                     $email )
                     );       
                 if ($result_rc->ringcentral_contacts_id) {
-                    $contacts_widget_return_message = "<br/><center>That email is already on file.<br/>Thanks for previously joining us!</center>" ;              
+                    $contacts_widget_return_message = "<br/><center><p style='color:red; display: inline;'>
+    	               That email is already on file.</p><br/>Thanks for previously joining us!</center>" ;              
                 } else {
                     // save with name
                     $wpdb->query( $wpdb->prepare("INSERT INTO 
@@ -139,7 +140,8 @@ class ringcentral_contacts_widget extends WP_Widget {
                         $uniq_token, $full_name, $email ) 
                     );            
                     ringcentral_send_welcome_email($email, $uniq_token, $full_name );                   
-                    $contacts_widget_return_message = "<br/><center><font color='green'>Contact Information saved...<br/>Check your email to confirm<br/>Thanks for joining us!</font></center>" ;                    
+                    $contacts_widget_return_message = "<br/><center><p style='color:green;'>Contact Information saved...<br/>
+                        Check your email to confirm<br/>Thanks for joining us!</p></center>" ;                    
                 }
             }
             // if only given an mobile, check to see if we already have it
@@ -150,7 +152,8 @@ class ringcentral_contacts_widget extends WP_Widget {
                     $mobile )
                     );                
                 if ($result_rc->ringcentral_contacts_id) {
-                    $contacts_widget_return_message = "<br/><center>That mobile number is already on file.<br/>Thanks for previously joining us!</center>" ;
+                    $contacts_widget_return_message = "<br/><center><p style='color:red; display: inline;'>
+                        That mobile number is already on file.</p><br/>Thanks for previously joining us!</center>" ;
                 } else {
                     // save with name
                     $wpdb->query( $wpdb->prepare("INSERT INTO
@@ -159,7 +162,9 @@ class ringcentral_contacts_widget extends WP_Widget {
                         $uniq_token, $full_name, $mobile )
                     );
                     ringcentral_send_welcome_mobile($mobile, $uniq_token, $full_name) ;
-                    $contacts_widget_return_message = "<br/><center><font color='green'>Contact Information saved...<br/>Check your phone to confirm<br/>Thanks for joining us!</font></center>" ;                   
+                    $contacts_widget_return_message = "<br/><center><p style='color:green;'>Contact Information saved...<br/>
+                        Check your phone to confirm<br/>Thanks for joining us!</p></center>" ;  
+                    // $contacts_widget_return_message .= " t: " . $uniq_token ;
                 }
             }            
             // if given both an email and mobile, check to see if we already have them
@@ -171,7 +176,8 @@ class ringcentral_contacts_widget extends WP_Widget {
                     $email, $mobile )
                 );
                 if ($result_rc->ringcentral_contacts_id) {
-                    $contacts_widget_return_message = "<br/><center>Contact Information already on file...<br/>Thanks for previously joining us!</center>" ;                   
+                    $contacts_widget_return_message = "<br/><center><p style='color:red; display: inline;'>
+                        Contact Information already on file...</p><br/>Thanks for previously joining us!</center>" ;                   
                 } else { // save new data
                     $wpdb->query( $wpdb->prepare("INSERT INTO
                         `ringcentral_contacts` (`ringcentral_token`, `full_name`, `email`, `mobile`)
@@ -181,12 +187,13 @@ class ringcentral_contacts_widget extends WP_Widget {
                     // send both welcome output
                     ringcentral_send_welcome_email($email, $uniq_token, $full_name );
                     ringcentral_send_welcome_mobile($mobile, $uniq_token, $full_name) ;
-                    $contacts_widget_return_message = "<br/><center><font color='green'>Contact Information saved...<br/>Check your email/phone to confirm<br/>Thanks for joining us!</font></center>" ;                    
+                    $contacts_widget_return_message = "<br/><center><p style='color:green;'>Contact Information saved...<br/>
+                            Check your email/phone to confirm<br/>Thanks for joining us!</p></center>" ;                    
                 }
             }  //end if already exists test        
         } else {
             // end data intergity fail tests
-            $contacts_widget_return_message = "<br/><center><font color='red'>" . $contacts_widget_return_message . "</font></center>";            
+            $contacts_widget_return_message = "<br/><center><p style='color:red;'>" . $contacts_widget_return_message . "</p></center>";            
         }
         
         // show message on widget area

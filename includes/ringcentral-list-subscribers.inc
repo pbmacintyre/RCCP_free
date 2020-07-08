@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2019 Paladin Business Solutions
+ * Copyright (C) 2019-2020 Paladin Business Solutions
  *
  */ 
 
@@ -52,7 +52,7 @@ class RC_List_Table extends WP_List_Table {
     function column_full_name($item) {
         // $_REQUEST['page'] used so action will be done on curren page in delete a href string              
         $actions = array(            
-           // 'edit' => sprintf('<a href="?page=%s&action=edit&id=%s">%s</a>', $_REQUEST['page'], $item['ringcentral_contacts_id'], 'Edit'),
+            //'edit' => sprintf('<a href="?page=%s&action=edit&id=%s">%s</a>', $_REQUEST['page'], $item['ringcentral_contacts_id'], 'Edit'),
             'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['ringcentral_contacts_id'], 'Delete')
         );
         return sprintf('%s %s',
