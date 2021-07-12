@@ -1,6 +1,6 @@
 <?php 
 /*
- * Copyright (C) 2019-2020 Paladin Business Solutions
+ * Copyright (C) 2019-2021 Paladin Business Solutions
  *
  */
 
@@ -37,13 +37,19 @@ dbDelta($ringcentral_sql);
 /* seed table with control row and basic  */
 /* data if there is no existing row       */
 /* ====================================== */
-$row_exists = $wpdb->get_var($wpdb->prepare("SELECT `ringcentral_control_id` FROM `ringcentral_control`
-        WHERE `ringcentral_control_id` = %d", 1) );
+$row_exists = $wpdb->get_var($wpdb->prepare("SELECT `ringcentral_control_id` 
+    FROM `ringcentral_control` WHERE `ringcentral_control_id` = %d", 1) );
 if (!$row_exists) {
-    $wpdb->query( $wpdb->prepare("INSERT INTO `ringcentral_control`
-      (`ringcentral_control_id`,`embedded_phone`,`ringcentral_sandbox`,`embed_width`,`embed_height`,`email_updates`,`mobile_updates`)
-      VALUES (%d, %d, %d, %d, %d )",
-        1, 0, 1, 300, 500, 1, 0 )
+    $wpdb->insert('ringcentral_control', 
+        array(
+            'ringcentral_control_id' => 1,
+            'embedded_phone' => 0,
+            'ringcentral_sandbox' => 1,            
+            'embed_width' => 300,            
+            'embed_height' => 600,            
+            'email_updates' => 1,            
+            'mobile_updates' => 0,            
+            )
         );
 }
 /* ================================= */

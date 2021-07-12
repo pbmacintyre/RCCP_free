@@ -1,7 +1,7 @@
 
 <?php
 /**
- * Copyright (C) 2019-2020 Paladin Business Solutions
+ * Copyright (C) 2019-2021 Paladin Business Solutions
  *
  */
 

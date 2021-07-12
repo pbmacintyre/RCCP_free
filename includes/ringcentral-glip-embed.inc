@@ -1,6 +1,6 @@
 <?php 
 /**
- * Copyright (C) 2019-2020 Paladin Business Solutions
+ * Copyright (C) 2019-2021 Paladin Business Solutions
  *
  */
 
@@ -32,8 +32,10 @@ if ($ringcentral_glip_on == 1) {
 		$server_URL .= RingCentral\SDK\SDK::SERVER_PRODUCTION ;
 	}
 	
-	$server_URL .= "&disableGlip=false";
+ 	$server_URL .= "&disableGlip=false";
 //  $server_URL .= "&disableGlip=false&disableCall=true&disableMessages=true";
+ 	
+// 	echo "Server URL: " . $server_URL;
 	
 	$iFrame_string = "<iframe id='rc-widget' allow='microphone' ";
 	$iFrame_string .= "width='$ringcentral_embed_width' ";

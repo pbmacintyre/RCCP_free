@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2019-2020 Paladin Business Solutions
+ * Copyright (C) 2019-2021 Paladin Business Solutions
  *
  */
 
@@ -134,7 +134,7 @@ Function check_form() {
                         $uniq_token, $full_name, $email )
 	            );
 	            ringcentral_send_welcome_email($email, $uniq_token, $full_name );
-	            $return_message = "<br/><center>Contact Information saved...the new member will still have to opt-in</center>" ;
+	            $return_message = "Contact Information saved...the new member will still have to opt-in" ;
 	        }
 	    }
 	    // if only given an mobile, check to see if we already have it
@@ -154,7 +154,7 @@ Function check_form() {
                         $uniq_token, $full_name, $mobile )
 	            );
 	            ringcentral_send_welcome_mobile($mobile, $uniq_token, $full_name) ;
-	            $return_message = "<br/><center>Contact Information saved...the new member will still have to opt-in</center>" ;
+	            $return_message = "Contact Information saved...the new member will still have to opt-in" ;
 	        }
 	    }
 	    // if given both an email and mobile, check to see if we already have them
