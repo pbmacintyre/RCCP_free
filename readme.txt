@@ -2,8 +2,8 @@
 Contributors:      pbmacintyre
 Tags:              Ring Central Communications API tools
 Requires at least: 4.1
-Tested up to:      5.5
-Stable tag:        1.4.2
+Tested up to:      5.8.1
+Stable tag:        1.4.5
 Requires PHP:      5.6
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -126,7 +126,9 @@ use of this plug in, but currently you do need to have a developer account.
 = 1.4 =
 * Added in the Team Messaging (Glip) API / embedded tool
 = 1.4.2 =
-* Updated User Guide with Appendix A - Guide to create app on RingCentral Developers site. 
+* Updated User Guide with Appendix A - Guide to create app on RingCentral Developers site.
+= 1.4.5 =
+* Ensured compatability with WordPress 5.8.1. 
 == Upgrade Notice ==
 == Contribute ==
 If you find this useful and if you want to contribute, here are some ways:

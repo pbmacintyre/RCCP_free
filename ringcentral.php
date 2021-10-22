@@ -4,7 +4,7 @@ Plugin Name: RCCP Free
 Plugin URI:  https://ringcentral.com/
 Description: RingCentral Communications Plugin - FREE
 Author:      Peter MacIntyre
-Version:     1.4.2
+Version:     1.4.5
 Author URI:  https://paladin-bs.com/peter-macintyre/
 Details URI: https://paladin-bs.com
 License:     GPL2
